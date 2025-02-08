@@ -7,7 +7,6 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
@@ -17,7 +16,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.emperormoh.myplayground.presentation.screens.LocalTransferScreen
-import com.emperormoh.myplayground.presentation.screens.LocalTransferUiState
 import com.emperormoh.myplayground.presentation.screens.LocalTransferViewModel
 import com.emperormoh.myplayground.ui.theme.MyPlayGroundTheme
 import kotlinx.coroutines.launch
@@ -37,11 +35,25 @@ class MainActivity : ComponentActivity() {
                         onBackClick = {},
                         uiState = localTransferUiState,
                         onPredictBank = {
-                            coroutineScope.launch{localTransferVm.predictBank(localTransferUiState.destinationAccountNumber)} },
-                        onBankSelected = {
-                            localTransferVm.dismissPredictionColumn()
+                            coroutineScope.launch {
+                                localTransferVm.predictBank(localTransferUiState.destinationAccountNumber)
+                            }
                         },
-                        onShowAllBanks = { Toast.makeText(context, "Hello from Compose!", Toast.LENGTH_SHORT).show()}
+                        onBankSelected = { bank ->
+                            localTransferVm.setSelectedBank(bank)
+                        },
+                        onAccountNumberChanged = { localTransferVm.resetFieldsUiOnAccountNumberChanged() },
+                        showAllBanks = localTransferVm.getAllBanks(),
+                        onSearchQueryChanged = { searchParam ->
+                            //Toast.makeText(context, searchParam.takeIf { it.isNotBlank() } ?: "Default Text", Toast.LENGTH_SHORT).show()
+                            if(searchParam.isNotBlank()){
+                                localTransferVm.setBanks(localTransferVm.getAllBanks())
+                                localTransferVm.searchBanks( query = searchParam, banks = localTransferUiState.allBanks)
+                                //localTransferVm.searchBanks( query = searchParam, banks = localTransferVm._originalBanks)
+                            }else {
+                                localTransferVm.setBanks(localTransferVm.getAllBanks()) // Reset to full list
+                            }
+                        }
                     )
                 }
             }
@@ -49,18 +61,12 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
+
 
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     MyPlayGroundTheme {
-        Greeting("Android")
+
     }
 }

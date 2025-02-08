@@ -8,7 +8,6 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -43,22 +42,23 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.emperormoh.myplayground.presentation.componenets.BankCard
+import com.emperormoh.myplayground.R
+import com.emperormoh.myplayground.presentation.componenets.BankItemCardOne
 import com.emperormoh.myplayground.presentation.componenets.BankNotOnTheListCard
+import com.emperormoh.myplayground.presentation.componenets.CustomDropDown
 import com.emperormoh.myplayground.presentation.componenets.CustomTextField
+import com.emperormoh.myplayground.presentation.componenets.SelectBankModal
+import com.emperormoh.myplayground.presentation.componenets.allBanks
 import com.emperormoh.myplayground.ui.theme.AlatRed
-import com.emperormoh.myplayground.ui.theme.Manrope
 import com.emperormoh.myplayground.ui.theme.MyPlayGroundTheme
 import com.emperormoh.myplayground.ui.theme.WhiteTextColor
 
@@ -70,7 +70,9 @@ fun LocalTransferScreen(
     onBackClick: () -> Unit,
     onPredictBank: () -> Unit,
     onBankSelected: (Bank) -> Unit,
-    onShowAllBanks: () -> Unit,
+    showAllBanks: List<Bank> = emptyList(),
+    onAccountNumberChanged: (String) -> Unit,
+    onSearchQueryChanged: (String) -> Unit,
 ){
 
    Scaffold (
@@ -87,12 +89,15 @@ fun LocalTransferScreen(
                }
            )
        }
-   ) {
+   ) { paddingValues ->
        val keyboard = LocalSoftwareKeyboardController.current
        var accountNumberValue by remember { mutableStateOf("") }
+
+       var showBankModal by remember { mutableStateOf(false) }
+       var selectedBank by remember { mutableStateOf<Bank?>(null) }
        Column (
         modifier = Modifier
-            .padding(it)
+            .padding(paddingValues)
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
        ){
@@ -100,7 +105,7 @@ fun LocalTransferScreen(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 12.dp),
+                    .padding(horizontal = 14.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -109,7 +114,7 @@ fun LocalTransferScreen(
             }
 
           CustomTextField(
-              modifier = Modifier.padding(top = 10.dp, start = 12.dp, end = 12.dp),
+              modifier = Modifier.padding(top = 5.dp, start = 12.dp, end = 12.dp),
               placeholder = {
                   Text(text = "Enter name or account number")
               },
@@ -122,7 +127,7 @@ fun LocalTransferScreen(
               trailingIcon = {
                   if (uiState.isPredictBankLoading) {
                       CircularProgressIndicator(
-                          modifier = Modifier.size(24.dp),
+                          modifier = Modifier.size(15.dp),
                           strokeCap = StrokeCap.Round,
                           color = AlatRed,
                           strokeWidth = 2.dp
@@ -133,11 +138,18 @@ fun LocalTransferScreen(
               onTextValueChange = { text ->
                   accountNumberValue = text
                   uiState.destinationAccountNumber = text
-                  if (text.length == 5) {
+                  if (text.length < 10 && text.all{ it.isDigit() }) {
+                      onAccountNumberChanged(text)
+                  }
+                  if (text.all { it.isLetter() }) {
+                      onAccountNumberChanged(text)
+                  }
+                  if (text.length == 5 && text.all { it.isLetter() }) {
                       keyboard?.hide()
                       onPredictBank()
                   }
-              }
+              },
+              errorText = uiState.invalidParameter
           )
            AnimatedVisibility(
                visible = uiState.showPredictedBanks,
@@ -165,27 +177,65 @@ fun LocalTransferScreen(
                                    .heightIn(max = 200.dp)
                            ) {
                                items(uiState.predictedBanks) { bank ->
-                                   BankCard(
+                                   BankItemCardOne(
                                        bank = bank,
-                                       onClick = onBankSelected
+                                       onClick = { onBankSelected(bank) }
                                    )
                                }
                            }
                            SpaceHeight(18.dp)
-                           BankNotOnTheListCard {
-                               onShowAllBanks()
-                           }
+                           BankNotOnTheListCard (onClick = { showBankModal = true})
                        }
                    }
-
-
                }
            }
+
+           AnimatedVisibility(
+               visible = uiState.transferData != null,
+               enter = slideInHorizontally() + expandVertically(),
+               exit = slideOutHorizontally() + shrinkVertically()
+           ){
+                Column( modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 12.dp),) {
+                    SpaceHeight(20.dp)
+                    Text(text = "Bank", style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold)
+                    CustomDropDown(
+                        modifier = Modifier.padding(top = 5.dp),
+                        value = uiState.transferData?.bank?.bankName ?: "",
+                        maxLines = 1,
+                        maxLength = 15,
+                        trailingIcon = {
+                            Icon(
+                                painter = painterResource(id = R.drawable.arrow_down),
+                                contentDescription = null)
+                        },
+                        onClick = {
+                            showBankModal = true
+                        },
+                       enabled = false
+                    )
+                }
+           }
+           if(showBankModal){
+               SelectBankModal(
+                   onBankSelected = { bank ->
+                       onBankSelected(bank)
+                       selectedBank = bank
+                       showBankModal = !showBankModal
+                   },
+                   onBankSearch = {
+                       onSearchQueryChanged(it)
+                   },
+                   onDismiss = {
+                       showBankModal = !showBankModal
+                   },
+                   uiState = uiState,
+                   onSearchQueryChanged = {
+                       onSearchQueryChanged(it)}
+               )
+           }
        }
-
-
-
-
 
    }
 }
@@ -204,10 +254,24 @@ fun SpaceWidth(width: Dp = 10.dp){
 @Composable
 fun LocalTransferScreenPreview() {
     MyPlayGroundTheme {
+        val bank = Bank(
+            bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/000015.png",
+            bankCode = "000015",
+            bankName = "ZENITH BANK"
+        )
         LocalTransferScreen(onBackClick = {},
-            uiState = LocalTransferUiState(),
+            uiState = LocalTransferUiState(
+                transferData = TransferData(
+                    name = "Adetifa Oluwatosin",
+                    accountNumber = "1232232323",
+                    bank = bank
+                )
+            ),
             onPredictBank = {},
             onBankSelected = {},
-            onShowAllBanks = {})
+            showAllBanks = allBanks,
+            onAccountNumberChanged = {},
+            onSearchQueryChanged = {}
+        )
     }
 }

@@ -6,10 +6,10 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -18,11 +18,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowRight
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
@@ -35,26 +35,25 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.emperormoh.myplayground.R
 import com.emperormoh.myplayground.presentation.screens.Bank
+import com.emperormoh.myplayground.presentation.screens.SpaceHeight
 import com.emperormoh.myplayground.presentation.screens.SpaceWidth
 import com.emperormoh.myplayground.ui.theme.AlatRed
 import com.emperormoh.myplayground.ui.theme.BankCardBorder
-import com.emperormoh.myplayground.ui.theme.GrayText3
-import com.emperormoh.myplayground.ui.theme.LightGray
+import com.emperormoh.myplayground.ui.theme.BankGray
 import com.emperormoh.myplayground.ui.theme.Manrope
 import com.emperormoh.myplayground.ui.theme.MediumLightGray
 import com.emperormoh.myplayground.ui.theme.MyPlayGroundTheme
-import com.emperormoh.myplayground.ui.theme.TextFieldBG
 import com.emperormoh.myplayground.ui.theme.WhiteTextColor
 
 @Composable
-fun BankCard(
+fun BankItemCardOne(
     modifier: Modifier = Modifier,
     bank: Bank,
-    onClick: (Bank) -> Unit
+    onClick: () -> Unit
 ) {
     Row(
         modifier = modifier
-            .clickable { onClick(bank) }
+            .clickable { onClick() }
             .background(color = WhiteTextColor, shape = RoundedCornerShape(4.dp))
             .padding(top = 15.dp)
             .fillMaxWidth()
@@ -67,11 +66,9 @@ fun BankCard(
             modifier = Modifier
                 .background(
                     color = WhiteTextColor,
-                    shape = RoundedCornerShape(4.dp),
-
-                    )
+                    shape = CircleShape)
                 .border(width = 0.5.dp, color = BankCardBorder, shape = CircleShape)
-                .size(50.dp),
+                .size(30.dp),
             contentAlignment = Alignment.Center
         ) {
             LoadImageFromUrlOpt(
@@ -80,12 +77,11 @@ fun BankCard(
                 placeholderIcon = { Icon(modifier = Modifier.fillMaxSize().padding(4.dp), painter = painterResource(id = R.drawable.ic_bank), contentDescription = null) }
             )
         }
-        SpaceWidth(10.dp)
         Text(
             text = bank.bankName,
             style = TextStyle(
                 fontFamily = Manrope,
-                fontSize = 18.sp,
+                fontSize = 12.sp,
                 fontWeight = FontWeight.Bold,
                 lineHeight = 21.sp,
                 color = Color.Black,
@@ -106,9 +102,9 @@ fun BankNotOnTheListCard(
 ){
     Box(modifier.clickable { onClick() }
         .background(color = MediumLightGray, shape = RoundedCornerShape(8.dp))
-        .height(46.dp)
+        //.wrapContentHeight()
         .fillMaxWidth()
-        .padding(8.dp)
+        .padding(3.dp)
     ) {
         Row (
             modifier.align(Alignment.Center),
@@ -119,63 +115,141 @@ fun BankNotOnTheListCard(
                 text = "Not on the list?",
                 style = TextStyle(
                     fontFamily = Manrope,
-                    fontSize = 18.sp,
+                    fontSize = 12.sp,
                     fontWeight = FontWeight.Bold,
-                    lineHeight = 21.sp,
+                    //lineHeight = 21.sp,
                     color = Color.Black,
                     //letterSpacing = 0.2.sp
                 ),
-                modifier = Modifier.padding(start = 8.dp)
+                //modifier = Modifier.padding(start = 8.dp)
             )
+            SpaceWidth(3.dp)
             Text(
                 text = "View more banks",
                 style = TextStyle(
                     fontFamily = Manrope,
-                    fontSize = 18.sp,
+                    fontSize = 12.sp,
                     fontWeight = FontWeight.Bold,
-                    lineHeight = 21.sp,
+                    //lineHeight = 21.sp,
                     color = AlatRed,
                     //letterSpacing = 0.2.sp
                 ),
-                modifier = Modifier.padding(start = 8.dp)
+                //modifier = Modifier.padding(start = 8.dp)
             )
-            SpaceWidth(10.dp)
+            SpaceWidth(5.dp)
             Image(
                 imageVector = Icons.AutoMirrored.Outlined.KeyboardArrowRight,
                 contentDescription = "content image",
-                modifier = Modifier
-                    .padding(end = 4.dp, top = 5.dp, bottom = 4.dp),
                 colorFilter = ColorFilter.tint(color = AlatRed),
-                contentScale = ContentScale.FillBounds
+//                modifier = Modifier
+//                    .padding(end = 4.dp, top = 5.dp, bottom = 4.dp),
+
+                //contentScale = ContentScale.FillBounds
             )
         }
     }
+}
 
+@Composable
+fun BankItemCardTwo(
+    modifier: Modifier = Modifier,
+    bank: Bank,
+    onClick: () -> Unit
+){
+    Box(modifier.clickable { onClick() }
+        .background(color = BankGray, shape = RoundedCornerShape(8.dp))
+        .fillMaxWidth()
+        .padding(10.dp)
+    ) {
+        Row(modifier.align(Alignment.CenterStart),
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically
+        ){
+            Box(modifier.background(
+                        color = BankGray,
+                        shape = CircleShape)
+                    .border(width = 0.5.dp, color = BankCardBorder, shape = CircleShape)
+                    .size(30.dp).clip(CircleShape),
+                contentAlignment = Alignment.Center
+            ) {
+                LoadImageFromUrlOpt(
+                    model = bank.bankLogo,
+                    contentDescription = bank.bankName,
+                    placeholderIcon = { Icon(modifier = Modifier.fillMaxSize()
+                        .padding(4.dp),
+                        painter = painterResource(id = R.drawable.ic_bank),
+                        contentDescription = null)
+                    }
+                )
+            }
 
+            Text(
+                text = bank.bankName,
+                style = TextStyle(
+                    fontFamily = Manrope,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Bold,
+                    lineHeight = 21.sp,
+                    color = Color.Black,
+                    letterSpacing = 0.2.sp),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.padding(start = 8.dp, end = 30.dp)
+            )
+
+        }
+        Box(modifier = Modifier
+            .size(15.dp)
+            .border(width = 1.dp, color = BankCardBorder, shape = CircleShape)
+            .background(color = WhiteTextColor, shape = CircleShape)
+            .align(Alignment.CenterEnd)
+        )
+    }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun BankCardPreview() {
     MyPlayGroundTheme {
-//        BankCard(
-//            modifier = Modifier,
-//            bank = aiBanks.first()
-//        ) { }
-        BankNotOnTheListCard(modifier = Modifier, onClick = {})
+        Column {
+
+            BankItemCardOne(
+                modifier = Modifier,
+                bank = aiBanks.first()
+            ) { }
+            SpaceHeight(20.dp)
+            BankNotOnTheListCard(modifier = Modifier, onClick = {})
+            SpaceHeight(20.dp)
+
+            BankItemCardTwo(bank = aiBanks.first(), onClick = {})
+        }
+
+
     }
 }
 
 val aiBanks = listOf(
-    Bank(bankCode = "001", bankLogo = "https://example.com/logo1.png", bankName = "First Bank"),
-    Bank(bankCode = "002", bankLogo = "https://example.com/logo2.png", bankName = "Second Bank"),
-    Bank(bankCode = "003", bankLogo = "https://example.com/logo3.png", bankName = "Third Bank"),
-    Bank(bankCode = "004", bankLogo = null, bankName = "Fourth Bank"),
-    Bank(bankCode = "005", bankLogo = "https://example.com/logo5.png", bankName = "Fifth Bank"),
-    Bank(bankCode = "006", bankLogo = "https://example.com/logo1.png", bankName = "First Bank"),
-    Bank(bankCode = "007", bankLogo = "https://example.com/logo2.png", bankName = "Second Bank"),
-    Bank(bankCode = "008", bankLogo = "https://example.com/logo3.png", bankName = "Third Bank"),
-    Bank(bankCode = "009", bankLogo = null, bankName = "Fourth Bank"),
-    Bank(bankCode = "0010", bankLogo = "https://example.com/logo5.png", bankName = "Fifth Bank")
+    Bank(bankCode = "000004", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/000004.png", bankName = "UNITED BANK FOR AFRICA"),
+    Bank(bankCode = "000003", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/000003.png", bankName = "FCMB"),
+    Bank(bankCode = "000011", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/000011.png", bankName = "UNITY BANK"),
+    )
 
-)
+val allBanks = listOf(
+    Bank(bankCode = "090110", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/090110.png", bankName = "VFD MFB"),
+    Bank(bankCode = "000015", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/000015.png", bankName = "ZENITH BANK"),
+    Bank(bankCode = "000018", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/000018.png", bankName = "UNION BANK"),
+    Bank(bankCode = "000026", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/000026.png", bankName = "TAJ BANK"),
+    Bank(bankCode = "000012", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/000012.png", bankName = "STANBIC IBTC BANK"),
+    Bank(bankCode = "000002", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/000002.png", bankName = "KEYSTONE BANK"),
+    Bank(bankCode = "000006", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/000006.png", bankName = "JAIZ BANK"),
+    Bank(bankCode = "000007", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/000007.png", bankName = "FIDELITY BANK"),
+    Bank(bankCode = "090551", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/090551.png", bankName = "FairMoney MFB"),
+    Bank(bankCode = "090267", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/090267.png", bankName = "KUDA MICROFINANCE BANK"),
+    Bank(bankCode = "000003", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/000003.png", bankName = "FCMB"),
+    Bank(bankCode = "000004", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/000004.png", bankName = "UNITED BANK FOR AFRICA"),
+    Bank(bankCode = "000011", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/000011.png", bankName = "UNITY BANK"),
+    Bank(bankCode = "035", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/035.png", bankName = "ALATbyWEMA"),
+    Bank(bankCode = "035", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/035.png", bankName = "WEMA BANK"),
+    Bank(bankCode = "000013", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/000013.png", bankName = "GUARANTY TRUST BANK"),
+    Bank(bankCode = "000010", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/000010.png", bankName = "ECOBANK"),
+    )

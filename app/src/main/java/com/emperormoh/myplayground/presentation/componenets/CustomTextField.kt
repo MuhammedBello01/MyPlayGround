@@ -4,12 +4,15 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -17,6 +20,7 @@ import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -37,14 +41,11 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.emperormoh.myplayground.R
-import com.emperormoh.myplayground.presentation.screens.LocalTransferScreen
 import com.emperormoh.myplayground.ui.theme.AlatRed
 import com.emperormoh.myplayground.ui.theme.Error
 import com.emperormoh.myplayground.ui.theme.GrayIndicator
 import com.emperormoh.myplayground.ui.theme.Manrope
-import com.emperormoh.myplayground.ui.theme.MyPlayGroundTheme
 import com.emperormoh.myplayground.ui.theme.TextColor
-import com.emperormoh.myplayground.ui.theme.TextFieldBG
 import com.emperormoh.myplayground.ui.theme.TextFieldBorder
 import com.emperormoh.myplayground.ui.theme.TextFieldHint
 import com.emperormoh.myplayground.ui.theme.TextFieldStyle
@@ -57,7 +58,7 @@ fun CustomTextField(
     maxLines: Int = 1,
     maxLength: Int = Integer.MAX_VALUE,
     textColor: Color = TextColor,
-    fontSize: TextUnit = 16.sp,
+    fontSize: TextUnit = 15.sp,
     enabled: Boolean = true,
     hasInfoText: Boolean = false,
     errorText: String? = null,
@@ -76,7 +77,7 @@ fun CustomTextField(
     ){
         Box(
             modifier.background(color = WhiteTextColor, shape = RoundedCornerShape(10.dp))
-                .border(width = 1.dp, shape = RoundedCornerShape(12.dp), color = TextFieldBorder)
+                .border(width = 1.dp, shape = RoundedCornerShape(10.dp), color = TextFieldBorder)
                 .fillMaxWidth(),
             contentAlignment = Alignment.Center
 
@@ -158,6 +159,47 @@ fun CustomTextField(
     }
 }
 
+@Composable
+fun CustomDropDown(
+    value: String,
+    modifier: Modifier = Modifier,
+    maxLines: Int = 1,
+    maxLength: Int = Integer.MAX_VALUE,
+    textColor: Color = TextColor,
+    fontSize: TextUnit = 16.sp,
+    enabled: Boolean = true,
+    hasInfoText: Boolean = false,
+    errorText: String? = null,
+    prefixText: String? = null,
+    trailingIcon: @Composable (() -> Unit)? = null,
+    leadingIcon: @Composable (() -> Unit)? = null,
+    placeholder: @Composable (() -> Unit)? = null,
+    onClick: () -> Unit = {},
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+){
+    CustomTextField(
+        modifier = modifier.clickable {
+            onClick()
+        },
+        value = value,
+        maxLines = maxLines,
+        maxLength = maxLength,
+        onTextValueChange = {},
+        prefixText = prefixText,
+        textColor = textColor,
+        fontSize = fontSize,
+        enabled = enabled,
+        hasInfoText = hasInfoText,
+        errorText = errorText,
+        trailingIcon = trailingIcon,
+        leadingIcon = leadingIcon,
+        placeholder = placeholder,
+        visualTransformation = visualTransformation,
+        onActionClicked = onClick
+
+    )
+}
+
 val LocalNavController = compositionLocalOf<NavHostController> { error("No NavController found!") }
 @Composable
 fun PreviewWrapper(content: @Composable () -> Unit) {
@@ -171,8 +213,20 @@ fun PreviewWrapper(content: @Composable () -> Unit) {
 @Composable
 fun LocalTransferScreenPreview() {
     PreviewWrapper {
-        CustomTextField(value = "", placeholder = { Text(text = "Enter name or account number") }) {
 
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(10.dp)
+        ){
+          CustomTextField(value = "", placeholder = { Text(text = "Enter name or account number") }) {}
+            CustomDropDown(value = "ZenithBanks", trailingIcon = {
+                Icon(
+                    painter = painterResource(id = R.drawable.arrow_down),
+                    contentDescription = null)
+            },)
         }
+
     }
 }

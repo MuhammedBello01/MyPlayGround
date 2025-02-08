@@ -5,6 +5,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -34,6 +35,7 @@ import coil.imageLoader
 import coil.memory.MemoryCache
 import com.emperormoh.myplayground.ui.theme.AlatRed
 import com.emperormoh.myplayground.ui.theme.LightGray
+import com.emperormoh.myplayground.ui.theme.WhiteTextColor
 
 @Composable
 fun LoadImageFromUrl(
@@ -123,7 +125,7 @@ fun LoadImageFromUrlOpt(
     var hasError by remember { mutableStateOf(false) }
 
     Box(
-        modifier = modifier,
+        modifier = modifier.background(color = WhiteTextColor),
         contentAlignment = Alignment.Center,
     ) {
         AsyncImage(

@@ -1,6 +1,7 @@
 package com.emperormoh.myplayground.presentation.screens
 
 import android.util.Log
+import android.widget.Toast
 import androidx.annotation.Keep
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.delay
@@ -14,39 +15,48 @@ class LocalTransferViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(LocalTransferUiState())
     val uiState: StateFlow<LocalTransferUiState> = _uiState.asStateFlow()
 
+     val _originalBanks = mutableListOf<Bank>() // Store the full bank list
+
+    init {
+        getAllBanks()
+    }
+
+    suspend fun onAccountDetailsTypeControl(input: String){
+        when(checkStringType(input)){
+            InputType.NUMBERS -> predictBank(input)
+            InputType.ALPHABETS -> {}
+            InputType.MIXED -> {
+                _uiState.update {
+                    it.copy(
+                        isPredictBankLoading = false,
+                        predictedBanks = emptyList(),
+                        showPredictedBanks = false,
+                        invalidParameter = "Mixed characters not allowed"
+                    )
+                }
+            }
+        }
+    }
+
     suspend fun predictBank(bankName: String){
+        getAllBanks()
         _uiState.update {
             it.copy(
                 isPredictBankLoading = true,
                 predictedBanks = emptyList(),
-                showPredictedBanks = false
+                showPredictedBanks = false,
+                transferData = null
             )
         }
-
         try{
-
-            val aiBanks = listOf(
-                Bank(bankCode = "001", bankLogo = "https://example.com/logo1.png", bankName = "First Bank"),
-                Bank(bankCode = "002", bankLogo = "https://example.com/logo2.png", bankName = "Second Bank"),
-                Bank(bankCode = "003", bankLogo = "https://example.com/logo3.png", bankName = "Third Bank"),
-                Bank(bankCode = "004", bankLogo = null, bankName = "Fourth Bank"),
-                Bank(bankCode = "005", bankLogo = "https://example.com/logo5.png", bankName = "Fifth Bank"),
-                Bank(bankCode = "006", bankLogo = "https://example.com/logo1.png", bankName = "First Bank"),
-                Bank(bankCode = "007", bankLogo = "https://example.com/logo2.png", bankName = "Second Bank"),
-                Bank(bankCode = "008", bankLogo = "https://example.com/logo3.png", bankName = "Third Bank"),
-                Bank(bankCode = "009", bankLogo = null, bankName = "Fourth Bank"),
-                Bank(bankCode = "0010", bankLogo = "https://example.com/logo5.png", bankName = "Fifth Bank")
-
-            )
-
-            val predictedBanks = aiBanks.filter { it.bankName.contains(bankName, ignoreCase = true) }
+            val predictedBanks = getPredictedBanks().filter { it.bankName.contains(bankName, ignoreCase = true) }
             delay(2000)
-
             _uiState.update {
                 it.copy(
                     isPredictBankLoading = false,
                     predictedBanks = predictedBanks,
-                    showPredictedBanks = true
+                    showPredictedBanks = true,
+                    transferData = null
                 )
             }
         }
@@ -56,7 +66,8 @@ class LocalTransferViewModel : ViewModel() {
                 it.copy(
                     isPredictBankLoading = false,
                     predictedBanks = emptyList(),
-                    showPredictedBanks = true
+                    showPredictedBanks = true,
+                    transferData = null
                 )
             }
             // Log the error for debugging
@@ -64,15 +75,96 @@ class LocalTransferViewModel : ViewModel() {
         }
     }
 
-    fun dismissPredictionColumn(){
+    fun checkStringType(input: String): InputType {
+        return when {
+            input.all { it.isDigit() } -> InputType.NUMBERS
+            input.all { it.isLetter() } -> InputType.ALPHABETS
+            else -> InputType.MIXED
+        }
+    }
+
+    fun setSelectedBank(bank: Bank){
         _uiState.update {
             it.copy(
                 isPredictBankLoading = false,
-                showPredictedBanks = false
+                showPredictedBanks = false,
+                transferData = TransferData(
+                    bank = bank
+                )
             )
         }
     }
 
+    fun resetFieldsUiOnAccountNumberChanged(){
+        _uiState.update {
+            it.copy(
+                isPredictBankLoading = false,
+                predictedBanks = emptyList(),
+                showPredictedBanks = false,
+                transferData = null
+            )
+        }
+    }
+
+    fun searchBanks(query: String?, banks: List<Bank>?) {
+       if (query.isNullOrBlank() || banks.isNullOrEmpty()) return
+
+        val filteredBanks = banks.filter { it.bankName.contains(query, ignoreCase = true) }
+        _uiState.update {
+            it.copy(
+                allBanks = filteredBanks,
+                showAllBanks = true
+            )
+        }
+    }
+
+    fun setBanks(banks: List<Bank>) {
+        _originalBanks.clear()
+        _originalBanks.addAll(banks)
+        _uiState.update { it.copy(allBanks = banks,
+        showAllBanks = true) }
+    }
+
+    fun getAllBanks(): List<Bank>{
+        _uiState.update {
+            it.copy(
+                allBanks = allBanksMock(),
+                showAllBanks = true
+            )
+        }
+        //_originalBanks.addAll(allBanksMock())
+        return allBanksMock()
+    }
+
+    private fun getPredictedBanks() = listOf(
+        Bank(bankCode = "000004", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/000004.png", bankName = "UNITED BANK FOR AFRICA"),
+        Bank(bankCode = "000003", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/000003.png", bankName = "FCMB"),
+        Bank(bankCode = "000011", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/000011.png", bankName = "UNITY BANK"),
+    )
+
+    fun allBanksMock()  = listOf(
+        Bank(bankCode = "090110", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/090110.png", bankName = "VFD MFB"),
+        Bank(bankCode = "000015", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/000015.png", bankName = "ZENITH BANK"),
+        Bank(bankCode = "000018", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/000018.png", bankName = "UNION BANK"),
+        Bank(bankCode = "000026", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/000026.png", bankName = "TAJ BANK"),
+        Bank(bankCode = "000012", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/000012.png", bankName = "STANBIC IBTC BANK"),
+        Bank(bankCode = "000002", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/000002.png", bankName = "KEYSTONE BANK"),
+        Bank(bankCode = "000006", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/000006.png", bankName = "JAIZ BANK"),
+        Bank(bankCode = "000007", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/000007.png", bankName = "FIDELITY BANK"),
+        Bank(bankCode = "090551", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/090551.png", bankName = "FairMoney MFB"),
+        Bank(bankCode = "090267", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/090267.png", bankName = "KUDA MICROFINANCE BANK"),
+        Bank(bankCode = "000003", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/000003.png", bankName = "FCMB"),
+        Bank(bankCode = "000004", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/000004.png", bankName = "UNITED BANK FOR AFRICA"),
+        Bank(bankCode = "000011", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/000011.png", bankName = "UNITY BANK"),
+        Bank(bankCode = "035", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/035.png", bankName = "ALATbyWEMA"),
+        Bank(bankCode = "035", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/035.png", bankName = "WEMA BANK"),
+        Bank(bankCode = "000013", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/000013.png", bankName = "GUARANTY TRUST BANK"),
+        Bank(bankCode = "000010", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/000010.png", bankName = "ECOBANK"),
+    )
+}
+
+enum class InputType {
+    NUMBERS, ALPHABETS, MIXED
 }
 
 data class LocalTransferUiState(
@@ -90,6 +182,9 @@ data class LocalTransferUiState(
     val transferData: TransferData? = null,
     val recentTransactions: List<TransferData> = emptyList(),
     val beneficiaries: List<TransferData> = emptyList(),
+    val invalidParameter: String = "",
+    val showAllBanks: Boolean = false,
+    var bankSearchQuery: String = ""
 )
 
 data class Bank(
