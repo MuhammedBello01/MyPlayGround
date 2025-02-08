@@ -8,6 +8,7 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -57,7 +58,8 @@ import com.emperormoh.myplayground.presentation.componenets.BankNotOnTheListCard
 import com.emperormoh.myplayground.presentation.componenets.CustomDropDown
 import com.emperormoh.myplayground.presentation.componenets.CustomTextField
 import com.emperormoh.myplayground.presentation.componenets.SelectBankModal
-import com.emperormoh.myplayground.presentation.componenets.allBanks
+import com.emperormoh.myplayground.presentation.componenets.SimpleLoaderWithDescription
+import com.emperormoh.myplayground.presentation.componenets.VerifiedAccountCard
 import com.emperormoh.myplayground.ui.theme.AlatRed
 import com.emperormoh.myplayground.ui.theme.MyPlayGroundTheme
 import com.emperormoh.myplayground.ui.theme.WhiteTextColor
@@ -70,9 +72,9 @@ fun LocalTransferScreen(
     onBackClick: () -> Unit,
     onPredictBank: () -> Unit,
     onBankSelected: (Bank) -> Unit,
-    showAllBanks: List<Bank> = emptyList(),
     onAccountNumberChanged: (String) -> Unit,
     onSearchQueryChanged: (String) -> Unit,
+    onVerifyAccountNumber: () -> Unit
 ){
 
    Scaffold (
@@ -156,7 +158,7 @@ fun LocalTransferScreen(
                enter = slideInHorizontally() + expandVertically(),
                exit = slideOutHorizontally() + shrinkVertically()
            ) {
-               Column(modifier = Modifier.padding(horizontal = 12.dp)) {
+               Box (modifier = Modifier.padding(horizontal = 12.dp)) {
                    if (uiState.predictedBanks.isNotEmpty() && uiState.showPredictedBanks){
                        Column(
                            modifier = Modifier
@@ -179,7 +181,10 @@ fun LocalTransferScreen(
                                items(uiState.predictedBanks) { bank ->
                                    BankItemCardOne(
                                        bank = bank,
-                                       onClick = { onBankSelected(bank) }
+                                       onClick = {
+                                           onBankSelected(bank)
+                                           onVerifyAccountNumber()
+                                       }
                                    )
                                }
                            }
@@ -223,6 +228,7 @@ fun LocalTransferScreen(
                        onBankSelected(bank)
                        selectedBank = bank
                        showBankModal = !showBankModal
+                       onVerifyAccountNumber()
                    },
                    onBankSearch = {
                        onSearchQueryChanged(it)
@@ -235,6 +241,21 @@ fun LocalTransferScreen(
                        onSearchQueryChanged(it)}
                )
            }
+           AnimatedVisibility(
+               visible = uiState.isAccountNumberVerificationLoading,
+               enter = slideInHorizontally() + expandVertically(),
+               exit = slideOutHorizontally() + shrinkVertically()
+           ){
+              SimpleLoaderWithDescription(description = "Verifying account number")
+           }
+           AnimatedVisibility(
+               visible = uiState.isAccountNumberVerified && !uiState.transferData?.accountNumber.isNullOrEmpty() && !uiState.transferData?.nickname.isNullOrEmpty(),
+               enter = slideInHorizontally() + expandVertically(),
+               exit = slideOutHorizontally() + shrinkVertically()
+           ){
+               uiState.transferData?.nickname?.let { VerifiedAccountCard(nickName = it) }
+           }
+
        }
 
    }
@@ -269,9 +290,9 @@ fun LocalTransferScreenPreview() {
             ),
             onPredictBank = {},
             onBankSelected = {},
-            showAllBanks = allBanks,
             onAccountNumberChanged = {},
-            onSearchQueryChanged = {}
+            onSearchQueryChanged = {},
+            onVerifyAccountNumber = {}
         )
     }
 }

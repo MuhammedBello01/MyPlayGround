@@ -11,8 +11,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.ModalBottomSheet
@@ -102,9 +100,7 @@ fun SelectBankModal(
                     )
                 }
                 SpaceHeight(15.dp)
-                SearchBar(modifier = Modifier
-                    .padding(top = 10.dp, bottom = 10.dp),
-                    //searchQuery = " ",
+                SearchBar(
                     onQueryChanged = {
                         searchQuery = it
                         onSearchQueryChanged(it)
@@ -125,7 +121,7 @@ fun SelectBankModal(
 
                 SpaceHeight(15.dp)
 
-                BankListSection(title = "All Banks",
+                BankListSearchableSection(title = "All Banks",
                     isVisible = uiState.allBanks.isNotEmpty(),
                     banks = uiState.allBanks,
                     onBankSelected = { onBankSelected(it)})
@@ -176,9 +172,7 @@ fun BankModalPreview() {
                 }
 
                 SpaceHeight(15.dp)
-                SearchBar(modifier = Modifier
-                    .padding(top = 10.dp, bottom = 10.dp),
-                    //searchQuery = " ",
+                SearchBar(
                     onQueryChanged = {
 //                        searchQuery = it
 //                        onSearchQueryChanged(it)

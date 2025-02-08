@@ -17,6 +17,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowRight
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,7 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -207,6 +208,68 @@ fun BankItemCardTwo(
     }
 }
 
+@Composable
+fun VerifiedAccountCard(
+    modifier: Modifier = Modifier,
+    nickName: String
+){
+    Row(
+        modifier.fillMaxWidth().padding(start = 10.dp, end = 10.dp, top = 3.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Image(modifier = Modifier
+            .padding(4.dp),
+            painter = painterResource(id = R.drawable.ic_dummy_eceiver),
+            contentDescription = null)
+
+        Text(
+            text = nickName,
+            style = TextStyle(
+                fontFamily = Manrope,
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Bold,
+                lineHeight = 21.sp,
+                color = Color.Black,
+                letterSpacing = 0.5.sp),
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.padding(start = 2.dp)
+        )
+    }
+}
+
+@Composable
+fun SimpleLoaderWithDescription(
+    modifier: Modifier = Modifier,
+    description: String
+){
+    Row(
+        modifier.fillMaxWidth().padding(start = 14.dp, end = 10.dp, top = 5.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        CircularProgressIndicator(
+            modifier = Modifier.size(15.dp),
+            strokeCap = StrokeCap.Round,
+            color = AlatRed,
+            strokeWidth = 2.dp
+        )
+        SpaceWidth(3.dp)
+        Text(
+            text = description,
+            style = TextStyle(
+                fontFamily = Manrope,
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Bold,
+                lineHeight = 21.sp,
+                color = Color.Black,
+                letterSpacing = 0.5.sp),
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.padding(start = 2.dp)
+        )
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 fun BankCardPreview() {
@@ -222,6 +285,9 @@ fun BankCardPreview() {
             SpaceHeight(20.dp)
 
             BankItemCardTwo(bank = aiBanks.first(), onClick = {})
+            VerifiedAccountCard(nickName = "Suleiman Muhammed Bello")
+
+            SimpleLoaderWithDescription(description = "Verifying account number")
         }
 
 

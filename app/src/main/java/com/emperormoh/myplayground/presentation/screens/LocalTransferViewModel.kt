@@ -1,8 +1,10 @@
 package com.emperormoh.myplayground.presentation.screens
 
 import android.util.Log
-import android.widget.Toast
 import androidx.annotation.Keep
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +17,8 @@ class LocalTransferViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(LocalTransferUiState())
     val uiState: StateFlow<LocalTransferUiState> = _uiState.asStateFlow()
 
-     val _originalBanks = mutableListOf<Bank>() // Store the full bank list
+     private val _originalBanks = mutableListOf<Bank>() // Store the full bank list
+    private var theBankSelected by mutableStateOf<Bank?>(null)
 
     init {
         getAllBanks()
@@ -45,7 +48,9 @@ class LocalTransferViewModel : ViewModel() {
                 isPredictBankLoading = true,
                 predictedBanks = emptyList(),
                 showPredictedBanks = false,
-                transferData = null
+                transferData = null,
+                isAccountNumberVerificationLoading = false,
+                isAccountNumberVerified = false,
             )
         }
         try{
@@ -56,7 +61,9 @@ class LocalTransferViewModel : ViewModel() {
                     isPredictBankLoading = false,
                     predictedBanks = predictedBanks,
                     showPredictedBanks = true,
-                    transferData = null
+                    transferData = null,
+                    isAccountNumberVerificationLoading = false,
+                    isAccountNumberVerified = false,
                 )
             }
         }
@@ -67,7 +74,9 @@ class LocalTransferViewModel : ViewModel() {
                     isPredictBankLoading = false,
                     predictedBanks = emptyList(),
                     showPredictedBanks = true,
-                    transferData = null
+                    transferData = null,
+                    isAccountNumberVerificationLoading = false,
+                    isAccountNumberVerified = false,
                 )
             }
             // Log the error for debugging
@@ -84,15 +93,19 @@ class LocalTransferViewModel : ViewModel() {
     }
 
     fun setSelectedBank(bank: Bank){
+
         _uiState.update {
             it.copy(
                 isPredictBankLoading = false,
                 showPredictedBanks = false,
                 transferData = TransferData(
                     bank = bank
-                )
+                ),
+                isAccountNumberVerificationLoading = true,
+                isAccountNumberVerified = false,
             )
         }
+        theBankSelected = bank
     }
 
     fun resetFieldsUiOnAccountNumberChanged(){
@@ -101,21 +114,27 @@ class LocalTransferViewModel : ViewModel() {
                 isPredictBankLoading = false,
                 predictedBanks = emptyList(),
                 showPredictedBanks = false,
-                transferData = null
+                transferData = null,
+                isAccountNumberVerificationLoading = false,
+                isAccountNumberVerified = false,
             )
         }
     }
 
-    fun searchBanks(query: String?, banks: List<Bank>?) {
-       if (query.isNullOrBlank() || banks.isNullOrEmpty()) return
+    fun searchBanks(query: String?) {
+       if (query.isNullOrBlank() || _originalBanks.isEmpty()) return
 
-        val filteredBanks = banks.filter { it.bankName.contains(query, ignoreCase = true) }
+        val filteredBanks = _originalBanks.filter { it.bankName.contains(query, ignoreCase = true) }
         _uiState.update {
             it.copy(
                 allBanks = filteredBanks,
                 showAllBanks = true
             )
         }
+//        _uiState.value = _uiState.value.copy(
+//            allBanks = filteredBanks,
+//            showAllBanks = true
+//        )
     }
 
     fun setBanks(banks: List<Bank>) {
@@ -132,8 +151,26 @@ class LocalTransferViewModel : ViewModel() {
                 showAllBanks = true
             )
         }
-        //_originalBanks.addAll(allBanksMock())
         return allBanksMock()
+    }
+
+    suspend fun verifyAccountNumber(accountNumber: String){
+
+        delay(3000)
+        _uiState.update {
+            it.copy(
+                isPredictBankLoading = false,
+                showPredictedBanks = false,
+                transferData = TransferData(
+                   accountNumber = accountNumber,
+                    nickname = "Suleiman Muhammed Gladiola",
+                    bank = theBankSelected
+
+                ),
+                isAccountNumberVerificationLoading = false,
+                isAccountNumberVerified = true
+            )
+        }
     }
 
     private fun getPredictedBanks() = listOf(
@@ -157,7 +194,7 @@ class LocalTransferViewModel : ViewModel() {
         Bank(bankCode = "000004", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/000004.png", bankName = "UNITED BANK FOR AFRICA"),
         Bank(bankCode = "000011", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/000011.png", bankName = "UNITY BANK"),
         Bank(bankCode = "035", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/035.png", bankName = "ALATbyWEMA"),
-        Bank(bankCode = "035", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/035.png", bankName = "WEMA BANK"),
+        //Bank(bankCode = "035", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/035.png", bankName = "WEMA BANK"),
         Bank(bankCode = "000013", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/000013.png", bankName = "GUARANTY TRUST BANK"),
         Bank(bankCode = "000010", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/000010.png", bankName = "ECOBANK"),
     )
@@ -184,7 +221,9 @@ data class LocalTransferUiState(
     val beneficiaries: List<TransferData> = emptyList(),
     val invalidParameter: String = "",
     val showAllBanks: Boolean = false,
-    var bankSearchQuery: String = ""
+    var bankSearchQuery: String = "",
+    val isAccountNumberVerificationLoading: Boolean = false,
+    val isAccountNumberVerified: Boolean = false
 )
 
 data class Bank(

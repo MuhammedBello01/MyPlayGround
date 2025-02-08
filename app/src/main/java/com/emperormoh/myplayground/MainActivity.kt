@@ -1,7 +1,6 @@
 package com.emperormoh.myplayground
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -29,7 +28,7 @@ class MainActivity : ComponentActivity() {
                 Surface (modifier = Modifier.fillMaxSize()) {
                     val localTransferVm: LocalTransferViewModel = viewModel()
                     val localTransferUiState by localTransferVm.uiState.collectAsStateWithLifecycle()
-                    val context = LocalContext.current
+                    //val context = LocalContext.current
                     val coroutineScope = rememberCoroutineScope()
                     LocalTransferScreen(
                         onBackClick = {},
@@ -43,17 +42,19 @@ class MainActivity : ComponentActivity() {
                             localTransferVm.setSelectedBank(bank)
                         },
                         onAccountNumberChanged = { localTransferVm.resetFieldsUiOnAccountNumberChanged() },
-                        showAllBanks = localTransferVm.getAllBanks(),
                         onSearchQueryChanged = { searchParam ->
-                            //Toast.makeText(context, searchParam.takeIf { it.isNotBlank() } ?: "Default Text", Toast.LENGTH_SHORT).show()
                             if(searchParam.isNotBlank()){
-                                localTransferVm.setBanks(localTransferVm.getAllBanks())
-                                localTransferVm.searchBanks( query = searchParam, banks = localTransferUiState.allBanks)
+                                //localTransferVm.setBanks(localTransferVm.getAllBanks())
+                                localTransferVm.searchBanks( query = searchParam)
                                 //localTransferVm.searchBanks( query = searchParam, banks = localTransferVm._originalBanks)
                             }else {
                                 localTransferVm.setBanks(localTransferVm.getAllBanks()) // Reset to full list
                             }
-                        }
+                        },
+                        onVerifyAccountNumber = {
+                            coroutineScope.launch{
+                                localTransferVm.verifyAccountNumber(localTransferUiState.destinationAccountNumber)
+                            }}
                     )
                 }
             }
