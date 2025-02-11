@@ -4,13 +4,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Close
-import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -31,12 +29,9 @@ import com.emperormoh.myplayground.R
 import com.emperormoh.myplayground.ui.theme.AlatRed
 import com.emperormoh.myplayground.ui.theme.MediumLightGray
 import com.emperormoh.myplayground.ui.theme.MyPlayGroundTheme
-import com.emperormoh.myplayground.ui.theme.TextFieldBG
 
 @Composable
 fun SearchBar(
-    modifier: Modifier = Modifier,
-    searchQuery: String = "",
     onQueryChanged: (String) -> Unit,
     onSearchClicked: () -> Unit
 ) {
@@ -49,7 +44,9 @@ fun SearchBar(
             onValueChange = {
                 searchParam = it
                 onQueryChanged(it) },
-            leadingIcon = { Icon(imageVector = ImageVector.vectorResource(id = R.drawable.search_icon), contentDescription = "Search") },
+            leadingIcon = {
+                Icon(imageVector = ImageVector.vectorResource(id = R.drawable.search_icon),
+                contentDescription = "Search") },
             trailingIcon = {
                 if (searchParam.isNotEmpty()) {
                     Icon(

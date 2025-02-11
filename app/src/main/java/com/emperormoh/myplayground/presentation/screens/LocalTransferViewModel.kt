@@ -6,6 +6,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.emperormoh.myplayground.presentation.componenets.TransferBeneficiary
+import com.emperormoh.myplayground.presentation.componenets.getMockTransferBeneficiaryResponse
+import com.emperormoh.myplayground.presentation.componenets.getMockTransferFrequentBeneficiaryResponse
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -173,13 +176,28 @@ class LocalTransferViewModel : ViewModel() {
         }
     }
 
+    fun getFrequentBeneficiaries(){
+        _uiState.update {
+            it.copy(
+               frequentBeneficiaries = getMockTransferFrequentBeneficiaryResponse().beneficiaries
+            )
+        }
+    }
+
+    fun getSavedBeneficiaries(){
+        _uiState.update {
+            it.copy(
+                savedBeneficiaries = getMockTransferBeneficiaryResponse().beneficiaries
+            )
+        }
+    }
     private fun getPredictedBanks() = listOf(
         Bank(bankCode = "000004", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/000004.png", bankName = "UNITED BANK FOR AFRICA"),
         Bank(bankCode = "000003", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/000003.png", bankName = "FCMB"),
         Bank(bankCode = "000011", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/000011.png", bankName = "UNITY BANK"),
     )
 
-    fun allBanksMock()  = listOf(
+    private fun allBanksMock()  = listOf(
         Bank(bankCode = "090110", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/090110.png", bankName = "VFD MFB"),
         Bank(bankCode = "000015", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/000015.png", bankName = "ZENITH BANK"),
         Bank(bankCode = "000018", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/000018.png", bankName = "UNION BANK"),
@@ -223,12 +241,15 @@ data class LocalTransferUiState(
     val showAllBanks: Boolean = false,
     var bankSearchQuery: String = "",
     val isAccountNumberVerificationLoading: Boolean = false,
-    val isAccountNumberVerified: Boolean = false
+    val isAccountNumberVerified: Boolean = false,
+
+    val savedBeneficiaries: List<TransferBeneficiary> = emptyList(),
+    val frequentBeneficiaries: List<TransferBeneficiary> = emptyList()
 )
 
 data class Bank(
     val bankCode: String,
-    val bankLogo: String? = null,
+    val bankLogo: String,
     val bankName: String
 )
 

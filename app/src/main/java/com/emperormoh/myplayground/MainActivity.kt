@@ -14,6 +14,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.emperormoh.myplayground.presentation.screens.LocalTransferRoute
 import com.emperormoh.myplayground.presentation.screens.LocalTransferScreen
 import com.emperormoh.myplayground.presentation.screens.LocalTransferViewModel
 import com.emperormoh.myplayground.ui.theme.MyPlayGroundTheme
@@ -30,32 +31,48 @@ class MainActivity : ComponentActivity() {
                     val localTransferUiState by localTransferVm.uiState.collectAsStateWithLifecycle()
                     //val context = LocalContext.current
                     val coroutineScope = rememberCoroutineScope()
-                    LocalTransferScreen(
-                        onBackClick = {},
-                        uiState = localTransferUiState,
-                        onPredictBank = {
-                            coroutineScope.launch {
-                                localTransferVm.predictBank(localTransferUiState.destinationAccountNumber)
-                            }
-                        },
-                        onBankSelected = { bank ->
-                            localTransferVm.setSelectedBank(bank)
-                        },
-                        onAccountNumberChanged = { localTransferVm.resetFieldsUiOnAccountNumberChanged() },
-                        onSearchQueryChanged = { searchParam ->
-                            if(searchParam.isNotBlank()){
-                                //localTransferVm.setBanks(localTransferVm.getAllBanks())
-                                localTransferVm.searchBanks( query = searchParam)
-                                //localTransferVm.searchBanks( query = searchParam, banks = localTransferVm._originalBanks)
-                            }else {
-                                localTransferVm.setBanks(localTransferVm.getAllBanks()) // Reset to full list
-                            }
-                        },
-                        onVerifyAccountNumber = {
-                            coroutineScope.launch{
-                                localTransferVm.verifyAccountNumber(localTransferUiState.destinationAccountNumber)
-                            }}
+                    LocalTransferRoute(
+                        viewModel = localTransferVm,
+                        onBeneficiarySelected = {},
+                        onBackClick = {}
                     )
+
+//                    LocalTransferScreen(
+//                        onBackClick = {},
+//                        uiState = localTransferUiState,
+//                        onPredictBank = {
+//                            coroutineScope.launch {
+//                                localTransferVm.predictBank(localTransferUiState.destinationAccountNumber)
+//                            }
+//                        },
+//                        onBankSelected = { bank ->
+//                            localTransferVm.setSelectedBank(bank)
+//                        },
+//                        onAccountNumberChanged = { localTransferVm.resetFieldsUiOnAccountNumberChanged() },
+//                        onSearchQueryChanged = { searchParam ->
+//                            if (searchParam.isNotBlank()) {
+//                                //localTransferVm.setBanks(localTransferVm.getAllBanks())
+//                                localTransferVm.searchBanks(query = searchParam)
+//                                //localTransferVm.searchBanks( query = searchParam, banks = localTransferVm._originalBanks)
+//                            } else {
+//                                localTransferVm.setBanks(localTransferVm.getAllBanks()) // Reset to full list
+//                            }
+//                        },
+//                        onVerifyAccountNumber = {
+//                            coroutineScope.launch {
+//                                localTransferVm.verifyAccountNumber(localTransferUiState.destinationAccountNumber)
+//                            }
+//                        },
+//                        getFrequentBeneficiaries = {
+//                            localTransferVm.getFrequentBeneficiaries()
+//                        },
+//                        getSavedBeneficiaries = {
+//                            localTransferVm.getSavedBeneficiaries()
+//                        },
+//                        onBeneficiarySelected = {
+//
+//                        }
+//                    )
                 }
             }
         }
