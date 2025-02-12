@@ -51,6 +51,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -63,11 +64,14 @@ import com.emperormoh.myplayground.presentation.componenets.CustomButton
 import com.emperormoh.myplayground.presentation.componenets.CustomDropDown
 import com.emperormoh.myplayground.presentation.componenets.CustomTabs
 import com.emperormoh.myplayground.presentation.componenets.CustomTextField
+import com.emperormoh.myplayground.presentation.componenets.SavedBeneficiaryCard
 import com.emperormoh.myplayground.presentation.componenets.SelectBankModal
 import com.emperormoh.myplayground.presentation.componenets.SimpleLoaderWithDescription
 import com.emperormoh.myplayground.presentation.componenets.TabRowItem
 import com.emperormoh.myplayground.presentation.componenets.TransferBeneficiary
 import com.emperormoh.myplayground.presentation.componenets.VerifiedAccountCard
+import com.emperormoh.myplayground.presentation.componenets.getMockTransferBeneficiaryResponse
+import com.emperormoh.myplayground.presentation.componenets.getMockTransferFrequentBeneficiaryResponse
 import com.emperormoh.myplayground.ui.theme.AlatRed
 import com.emperormoh.myplayground.ui.theme.BankCardBorder
 import com.emperormoh.myplayground.ui.theme.Manrope
@@ -151,6 +155,9 @@ fun LocalTransferScreen(
 
        var showBankModal by remember { mutableStateOf(false) }
        var selectedBank by remember { mutableStateOf<Bank?>(null) }
+       var isBenSuggestionExpanded by remember { mutableStateOf(false) }
+       var filteredBen by remember { mutableStateOf(emptyList<TransferBeneficiary>()) }
+
        Column (
         modifier = Modifier
             .padding(paddingValues)
@@ -211,19 +218,45 @@ fun LocalTransferScreen(
               onTextValueChange = { text ->
                   accountNumberValue = text
                   uiState.destinationAccountNumber = text
-                  if (text.length < 10 && text.all{ it.isDigit() }) {
+                  if (text.all { it.isLetter() } || (text.length < 10 && text.all{ it.isDigit() })) {
                       onAccountNumberChanged(text)
                   }
-                  if (text.all { it.isLetter() }) {
-                      onAccountNumberChanged(text)
-                  }
-                  if (text.length == 5 && text.all { it.isLetter() }) {
+                  filteredBen = getMockTransferFrequentBeneficiaryResponse().beneficiaries
+                      .filter { ben ->
+                          ben.destinationAccountNumber.contains(text, ignoreCase = true) ||
+                                  ben.nickName.contains(text, ignoreCase = true) ||
+                                  ben.destinationAccountName.contains(text, ignoreCase = true)
+                      }
+                  isBenSuggestionExpanded = text.isNotEmpty() && filteredBen.isNotEmpty()
+//                  if (text.all { it.isLetter() }) {
+//                      onAccountNumberChanged(text)
+//                  }
+                  if (text.length == 10 && text.all { it.isDigit() }) {
                       keyboard?.hide()
                       onPredictBank()
                   }
               },
               errorText = uiState.invalidParameter
           )
+           if (isBenSuggestionExpanded){
+               LazyColumn(
+                   modifier = Modifier.padding(horizontal = 12.dp)
+                       .fillMaxWidth()
+                       .background(Color.White)
+               ) {
+                   items(items = filteredBen, key = {it.id}) { ben ->
+                       SavedBeneficiaryCard(
+                           isShowArrow = false,
+                           beneficiary = ben,
+                           onBeneficiaryClicked = {
+                               accountNumberValue = ben.destinationAccountNumber
+                               isBenSuggestionExpanded = false
+                               onBeneficiarySelected(ben)
+                           }
+                       )
+                   }
+               }
+           }
            AnimatedVisibility(
                visible = uiState.isPredictBankLoading,
                enter = slideInHorizontally() + expandVertically(),
@@ -418,11 +451,8 @@ fun LocalTransferScreen(
            )
            CustomTabs(tabRowItems = tabItems, pagerState = pagerState)
        }
-
    }
 }
-
-
 
 
 @Composable

@@ -1,5 +1,10 @@
 package com.emperormoh.myplayground.presentation.componenets
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.shrinkVertically
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -124,6 +129,7 @@ fun getMockTransferFrequentBeneficiaryResponse(): TransferBeneficiaryResponse {
 fun SavedBeneficiaryCard(
     modifier: Modifier = Modifier,
     beneficiary: TransferBeneficiary,
+    isShowArrow: Boolean = true,
     onBeneficiaryClicked: () -> Unit
 ){
     Box(
@@ -170,15 +176,22 @@ fun SavedBeneficiaryCard(
                     letterSpacing = 0.2.sp))
             }
         }
-        Image(
-            imageVector = Icons.AutoMirrored.Outlined.KeyboardArrowRight,
-            contentDescription = "content image",
+        AnimatedVisibility(
             modifier = Modifier
                 .padding(end = 4.dp, top = 4.dp, bottom = 4.dp)
                 .align(Alignment.CenterEnd),
-            colorFilter = ColorFilter.tint(color = Color.Gray),
-            contentScale = ContentScale.FillBounds
-        )
+            visible = isShowArrow,
+            enter = slideInHorizontally() + expandVertically(),
+            exit = slideOutHorizontally() + shrinkVertically()
+        ){
+            Image(
+                imageVector = Icons.AutoMirrored.Outlined.KeyboardArrowRight,
+                contentDescription = "content image",
+                colorFilter = ColorFilter.tint(color = Color.Gray),
+                contentScale = ContentScale.FillBounds
+            )
+        }
+
 
     }
 
@@ -193,7 +206,7 @@ fun SavedBenCardPreview(){
                 .fillMaxSize()
                 .background(Color.White)
         ){
-            SavedBeneficiaryCard(onBeneficiaryClicked = {}, beneficiary =getMockTransferBeneficiaryResponse().beneficiaries.first() )
+            SavedBeneficiaryCard(isShowArrow = true, onBeneficiaryClicked = {}, beneficiary =getMockTransferBeneficiaryResponse().beneficiaries.first() )
 
         }
     }

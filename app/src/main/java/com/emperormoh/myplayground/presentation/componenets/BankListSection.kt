@@ -113,7 +113,7 @@ fun BankListSearchableSection(
 
                     //modifier = Modifier.heightIn(max = 200.dp)
                 ) {
-                    items(banks, key = {it.bankCode}) { bank ->
+                    items(items = banks, key = {it.bankCode}) { bank ->
                         BankItemCardTwo(
                             bank = bank,
                             onClick = { onBankSelected(bank) }

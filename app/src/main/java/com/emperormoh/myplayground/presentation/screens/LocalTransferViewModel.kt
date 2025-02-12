@@ -44,7 +44,7 @@ class LocalTransferViewModel : ViewModel() {
         }
     }
 
-    suspend fun predictBank(bankName: String){
+    suspend fun predictBank(bankCode: String){
         getAllBanks()
         _uiState.update {
             it.copy(
@@ -57,7 +57,7 @@ class LocalTransferViewModel : ViewModel() {
             )
         }
         try{
-            val predictedBanks = getPredictedBanks().filter { it.bankName.contains(bankName, ignoreCase = true) }
+            val predictedBanks = getPredictedBanks().filter { it.bankCode.contains(bankCode, ignoreCase = true) }
             delay(2000)
             _uiState.update {
                 it.copy(
@@ -192,9 +192,9 @@ class LocalTransferViewModel : ViewModel() {
         }
     }
     private fun getPredictedBanks() = listOf(
-        Bank(bankCode = "000004", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/000004.png", bankName = "UNITED BANK FOR AFRICA"),
-        Bank(bankCode = "000003", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/000003.png", bankName = "FCMB"),
-        Bank(bankCode = "000011", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/000011.png", bankName = "UNITY BANK"),
+        Bank(bankCode = "0000000000", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/000004.png", bankName = "UNITED BANK FOR AFRICA"),
+        Bank(bankCode = "1111111111", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/000003.png", bankName = "FCMB"),
+        Bank(bankCode = "2222222222", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/000011.png", bankName = "UNITY BANK"),
     )
 
     private fun allBanksMock()  = listOf(
