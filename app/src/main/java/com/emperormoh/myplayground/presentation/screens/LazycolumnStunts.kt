@@ -63,6 +63,7 @@ fun SelectOneFromLazyColumn() {
                 .background(Color.White),
             verticalArrangement = Arrangement.spacedBy(3.dp)
         ) {
+            //this method can be used too
 //            itemsIndexed(mockUsers) { index, user ->
 //                PersonCard(
 //                    user = user,
