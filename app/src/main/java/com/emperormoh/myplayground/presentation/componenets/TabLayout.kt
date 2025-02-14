@@ -1,5 +1,8 @@
 package com.emperormoh.myplayground.presentation.componenets
 
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -24,6 +27,8 @@ import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -101,6 +106,17 @@ fun CustomTabs(
     pagerState: PagerState = rememberPagerState { tabRowItems.size },
 ){
     val scope = rememberCoroutineScope()
+
+    val selectedIndex = pagerState.currentPage
+    val tabWidth = remember { mutableStateOf(0f) }
+
+    // Animate the horizontal offset for the selected tab
+    val animatedOffset by animateFloatAsState(
+        targetValue = selectedIndex * tabWidth.value,
+        animationSpec = tween(durationMillis = 300, easing = LinearOutSlowInEasing),
+        label = "TabSlideAnimation"
+    )
+
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -152,6 +168,7 @@ fun CustomTabs(
                 }
             }
         }
+
         HorizontalPager(state = pagerState) { page ->
             tabRowItems[page].screen()
         }

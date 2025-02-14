@@ -253,6 +253,13 @@ data class Bank(
     val bankName: String
 )
 
+data class User(
+    val name: String,
+    val accountNumber: String,
+    val accountBalance: String,
+    val isActive: Boolean
+)
+
 data class TransferData(
     val name: String = "",
     val accountNumber: String? = null,
