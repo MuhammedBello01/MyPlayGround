@@ -10,6 +10,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.emperormoh.myplayground.presentation.componenets.StepIndicatorScreen
+import com.emperormoh.myplayground.presentation.componenets.VerticalStepIndicatorScreen
 import com.emperormoh.myplayground.presentation.screens.LocalTransferViewModel
 import com.emperormoh.myplayground.presentation.screens.SelectMultipleFromLazyColumn
 import com.emperormoh.myplayground.presentation.screens.SelectOneFromLazyColumn
@@ -36,7 +38,9 @@ class MainActivity : ComponentActivity() {
 
                     //UserCarousel()
                     //SelectOneFromLazyColumn()
-                    SelectMultipleFromLazyColumn()
+                    //SelectMultipleFromLazyColumn()
+                    //StepIndicatorScreen()
+                    VerticalStepIndicatorScreen()
 
                 }
             }
