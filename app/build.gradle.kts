@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId = "com.emperormoh.myplayground"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -62,6 +62,9 @@ dependencies {
     implementation(libs.android.material)
 
     implementation(libs.androidx.foundation)
+
+    implementation(libs.androidx.datastore.preferences)
+    implementation(libs.androidx.security.crypto)
 
 //    implementation(libs.accompanist.pager)
 //    implementation(libs.accompanist.pager.indicators)

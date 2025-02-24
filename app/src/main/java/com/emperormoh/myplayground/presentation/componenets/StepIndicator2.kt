@@ -91,13 +91,16 @@ fun VerticalStepIndicator(steps: List<TransactionStep>) {
 fun VerticalStepIndicatorScreen() {
     val steps = listOf(
         TransactionStep(StepStatus.COMPLETED, "Order Placed", "2024-02-01 10:30 AM"),
-        TransactionStep(StepStatus.COMPLETED, "Payment Confirmed", "2024-02-01 10:35 AM"),
-        TransactionStep(StepStatus.PENDING, "Shipped", "Awaiting shipment"),
-        TransactionStep(StepStatus.NOT_YET_STARTED, "Out for Delivery", "Scheduled for 2024-02-05")
+        TransactionStep(StepStatus.PENDING, "Payment Confirmed", "2024-02-01 10:35 AM"),
+        TransactionStep(StepStatus.COMPLETED, "Shipped", "Awaiting shipment"),
+        TransactionStep(StepStatus.NOT_YET_STARTED, "Out for Delivery", "Scheduled for 2024-02-05"),
+                TransactionStep(StepStatus.NOT_YET_STARTED, "Out for Delivery", "Scheduled for 2024-02-05")
+
     )
 
     Column(modifier = Modifier.padding(top = 100.dp)) {
-        VerticalStepIndicator(steps = steps)
+        val te = steps.sortedBy { it.status }
+        VerticalStepIndicator(steps = te)
     }
 
 

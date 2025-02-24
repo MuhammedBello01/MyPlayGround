@@ -14,10 +14,3 @@ data class TransactionStep(
 
 
 
-@Composable
-fun TheStepIndicator(
-    steps: Int,
-    currentStep: Int
-){
-
-}

@@ -101,7 +101,7 @@ fun UserCarousel() {
             UserCard(user = users[page], onClick = {})
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(5.dp))
 
         // **Dotted Indicators**
 
@@ -169,7 +169,7 @@ fun PageIndicator(
 //            )
             Box(
                 modifier = Modifier
-                    .size(12.dp)
+                    .size(10.dp)
                     //.scale(scale)
                     .clip(CircleShape)
                     .background(color)
