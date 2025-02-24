@@ -19,7 +19,9 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.emperormoh.myplayground.utils.getSecureComplexData
 import com.emperormoh.myplayground.utils.getSecureData
+import com.emperormoh.myplayground.utils.saveSecureComplexData
 import com.emperormoh.myplayground.utils.saveSecureData
 import kotlinx.coroutines.launch
 
@@ -27,28 +29,47 @@ import kotlinx.coroutines.launch
 fun SecureDataScreen(context: Context) {
     val scope = rememberCoroutineScope()
     var retrievedData by remember { mutableStateOf("No data") }
+    var retrievedDataObject by remember { mutableStateOf<User?>(null) }
 
+    val user =  User("Isaac Newton", "9012345678", "$7,550.00", false)
     Column(
         modifier = Modifier.fillMaxSize().padding(16.dp),
         verticalArrangement = Arrangement.Center
     ) {
         Button(onClick = {
-            scope.launch { saveSecureData(context, "username", "JohnDoe123990") }
+            scope.launch {
+                //saveSecureData(context, "username", "JohnDoe123990")
+                saveSecureComplexData(context, "user_details", user)
+            }
+
         }) {
             Text("Save Secure Data")
         }
 
         Button(onClick = {
             scope.launch {
-                getSecureData(context, "username").collect { data ->
-                    retrievedData = data ?: "No data"
-                }
+//                getSecureData(context, "username").collect { data ->
+//                    retrievedData = data ?: "No data"
+//                }
+
+                retrievedDataObject = getSecureComplexData(context, "user_details", User::class.java)
             }
         }) {
             Text("Retrieve Secure Data")
         }
 
         Spacer(modifier = Modifier.height(16.dp))
-        Text(text = "Retrieved Data: $retrievedData")
+        //Text(text = "Retrieved Data: $retrievedData")
+        //Text(text = "Retrieved Data: ${retrievedDataObject?.name}: ${retrievedDataObject?.accountNumber}: ${retrievedDataObject?.accountBalance}")
+
+
+        retrievedDataObject?.let { x ->
+            Text(text = "Retrieved Data: ${x.name}: ${x.accountNumber}: ${x.accountBalance}")
+
+        }
     }
 }
+
+
+
+
