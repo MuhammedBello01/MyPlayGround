@@ -1,12 +1,9 @@
 package com.emperormoh.myplayground.utils
 
 import android.content.Context
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
@@ -56,6 +53,11 @@ suspend fun <T> getSecureComplexData(context: Context, key: String, type: Class<
     val encryptedBytes = Base64.getDecoder().decode(encryptedString)
     val ivBytes = Base64.getDecoder().decode(ivString)
 
-    val decryptedJson = EncryptionHelper.decrypt(encryptedBytes, ivBytes)  // 🔓 Decrypt JSON
-    return gson.fromJson(decryptedJson, type)  // 📜 Convert back to object
+    return try{
+        val decryptedJson = EncryptionHelper.decrypt(encryptedBytes, ivBytes)  // 🔓 Decrypt JSON
+        return gson.fromJson(decryptedJson, type)  // 📜 Convert back to object
+    }catch (e: Exception) {
+        null  // Return null if decryption or deserialization fails
+    }
+
 }

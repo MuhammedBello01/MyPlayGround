@@ -67,6 +67,8 @@ dependencies {
     implementation(libs.androidx.security.crypto)
     implementation(libs.gson)
 
+    implementation(libs.androidx.material.icons.extended)
+
 //    implementation(libs.accompanist.pager)
 //    implementation(libs.accompanist.pager.indicators)
 }
