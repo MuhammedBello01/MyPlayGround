@@ -1,8 +1,6 @@
 package com.emperormoh.myplayground.presentation.screens
 
 import android.content.Context
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -19,10 +17,9 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.emperormoh.myplayground.presentation.screens.transfer.User
 import com.emperormoh.myplayground.utils.getSecureComplexData
-import com.emperormoh.myplayground.utils.getSecureData
 import com.emperormoh.myplayground.utils.saveSecureComplexData
-import com.emperormoh.myplayground.utils.saveSecureData
 import kotlinx.coroutines.launch
 
 @Composable

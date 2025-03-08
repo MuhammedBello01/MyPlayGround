@@ -52,18 +52,18 @@ import kotlinx.coroutines.launch
 
 val  tabRowItems = listOf(
     TabRowItem(
-        enabled = false, title = {Text(text = "Frequent")},
+        title = {Text(text = "Frequent")},
         screen = { TODO() }
     ),
     TabRowItem(
-        enabled = false, title = {Text(text = "Saved")},
+         title = {Text(text = "Saved")},
         screen = { TODO() }
     ),
 
 )
 
 data class TabRowItem(
-    val enabled: Boolean = true,
+    //val enabled: Boolean = true,
     val title: @Composable () -> Unit,
     val screen: @Composable () -> Unit,
 )
@@ -78,17 +78,20 @@ fun CustomTab(
     Tab(
         selected = selected,
         onClick = {},
-        enabled = enabled
-    ) {
+        enabled = enabled,
+        modifier = modifier.background(color = BankGray,
+            shape =if (selected) RoundedCornerShape(8.dp) else RectangleShape )
+
+        ) {
         Box(
-            modifier = modifier
+            modifier = modifier.padding(2.dp)
                 .background(color = if (selected) Color.White else BankGray,
                     shape = if (selected) RoundedCornerShape(8.dp) else RectangleShape)
                 .shadow(
                     elevation = if (selected) 2.dp else 0.dp,
                     shape = RoundedCornerShape(8.dp),
-                    ambientColor = Color.White,
-                    spotColor = Color.White
+                    ambientColor = BankGray,
+                    spotColor = BankGray
                 )
                 .height(38.dp)
                 .fillMaxWidth(),
@@ -125,8 +128,8 @@ fun CustomTabs(
     ){
         Box(
             modifier = modifier.background(color = BankGray,
-                shape = RoundedCornerShape(10.dp))
-                .padding(vertical = 0.5.dp)
+                shape = RoundedCornerShape(8.dp))
+                //.padding(vertical = 0.5.dp)
                 .border(
                     shape = RoundedCornerShape(8.dp),
                     border = BorderStroke(
@@ -145,7 +148,7 @@ fun CustomTabs(
             ){
                 tabRowItems.forEachIndexed { index, item ->
                     CustomTab(
-                        enabled = item.enabled,
+                        //enabled = item.enabled,
                         modifier = modifier
                             .clickable(
                                 interactionSource = remember {
@@ -181,11 +184,9 @@ fun TabPreview(){
     MyPlayGroundTheme {
         val items = listOf(
             TabRowItem(
-                true,
                 { Text("Completed") },
                 {}),
             TabRowItem(
-                true,
                 { Text("Ongoing") },
                 {})
         )

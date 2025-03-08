@@ -1,4 +1,4 @@
-package com.emperormoh.myplayground.presentation.screens
+package com.emperormoh.myplayground.presentation.screens.transfer
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
@@ -51,7 +51,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -70,7 +69,6 @@ import com.emperormoh.myplayground.presentation.componenets.SimpleLoaderWithDesc
 import com.emperormoh.myplayground.presentation.componenets.TabRowItem
 import com.emperormoh.myplayground.presentation.componenets.TransferBeneficiary
 import com.emperormoh.myplayground.presentation.componenets.VerifiedAccountCard
-import com.emperormoh.myplayground.presentation.componenets.getMockTransferBeneficiaryResponse
 import com.emperormoh.myplayground.presentation.componenets.getMockTransferFrequentBeneficiaryResponse
 import com.emperormoh.myplayground.ui.theme.AlatRed
 import com.emperormoh.myplayground.ui.theme.BankCardBorder
@@ -432,7 +430,8 @@ fun LocalTransferScreen(
                        uiState = uiState,
                        onBeneficiarySelected = onBeneficiarySelected,
                        getFrequentBeneficiaries = getFrequentBeneficiaries
-                   )}
+                   )
+                   }
                ),
                TabRowItem(
                    title = { Text(text = "Saved", style = TextStyle(
@@ -446,7 +445,8 @@ fun LocalTransferScreen(
                        uiState = uiState,
                        onBeneficiarySelected = onBeneficiarySelected,
                        getSavedBeneficiaries = getSavedBeneficiaries
-                   )}
+                   )
+                   }
                )
            )
            CustomTabs(tabRowItems = tabItems, pagerState = pagerState)

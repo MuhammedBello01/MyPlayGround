@@ -24,6 +24,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.emperormoh.myplayground.presentation.screens.transfer.SpaceHeight
+import com.emperormoh.myplayground.presentation.screens.transfer.User
 
 val mockUsers = listOf(
     User("Alice Johnson", "1234567890", "$5,320.75", true),

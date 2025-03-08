@@ -34,9 +34,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.emperormoh.myplayground.R
-import com.emperormoh.myplayground.presentation.screens.Bank
-import com.emperormoh.myplayground.presentation.screens.LocalTransferUiState
-import com.emperormoh.myplayground.presentation.screens.SpaceHeight
+import com.emperormoh.myplayground.presentation.screens.transfer.Bank
+import com.emperormoh.myplayground.presentation.screens.transfer.LocalTransferUiState
+import com.emperormoh.myplayground.presentation.screens.transfer.SpaceHeight
 import com.emperormoh.myplayground.ui.theme.BankGray
 import com.emperormoh.myplayground.ui.theme.Manrope
 import com.emperormoh.myplayground.ui.theme.MyPlayGroundTheme

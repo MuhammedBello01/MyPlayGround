@@ -9,7 +9,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -33,13 +32,12 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.emperormoh.myplayground.R
-import com.emperormoh.myplayground.presentation.screens.SpaceHeight
-import com.emperormoh.myplayground.presentation.screens.SpaceWidth
+import com.emperormoh.myplayground.presentation.screens.transfer.SpaceHeight
+import com.emperormoh.myplayground.presentation.screens.transfer.SpaceWidth
 import com.emperormoh.myplayground.ui.theme.BankCardBorder
 import com.emperormoh.myplayground.ui.theme.BankGray
 import com.emperormoh.myplayground.ui.theme.Manrope

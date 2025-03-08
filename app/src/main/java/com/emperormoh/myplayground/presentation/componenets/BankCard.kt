@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -36,16 +35,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.emperormoh.myplayground.R
-import com.emperormoh.myplayground.presentation.screens.Bank
-import com.emperormoh.myplayground.presentation.screens.SpaceHeight
-import com.emperormoh.myplayground.presentation.screens.SpaceWidth
+import com.emperormoh.myplayground.presentation.screens.transfer.Bank
+import com.emperormoh.myplayground.presentation.screens.transfer.SpaceHeight
+import com.emperormoh.myplayground.presentation.screens.transfer.SpaceWidth
 import com.emperormoh.myplayground.ui.theme.AlatRed
 import com.emperormoh.myplayground.ui.theme.BankCardBorder
 import com.emperormoh.myplayground.ui.theme.BankGray
 import com.emperormoh.myplayground.ui.theme.Manrope
 import com.emperormoh.myplayground.ui.theme.MediumLightGray
 import com.emperormoh.myplayground.ui.theme.MyPlayGroundTheme
-import com.emperormoh.myplayground.ui.theme.TextFieldBG
 import com.emperormoh.myplayground.ui.theme.WhiteTextColor
 
 @Composable

@@ -1,10 +1,9 @@
 package com.emperormoh.myplayground.presentation.screens
 
 import com.emperormoh.myplayground.R
-import com.emperormoh.myplayground.presentation.componenets.AlatEditTextField
-import com.emperormoh.myplayground.presentation.componenets.AlatGeneralText
+import com.emperormoh.myplayground.presentation.componenets.alat_components.AlatEditTextField
+import com.emperormoh.myplayground.presentation.componenets.alat_components.AlatGeneralText
 import com.emperormoh.myplayground.ui.theme.MyPlayGroundTheme
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
