@@ -19,7 +19,7 @@ import com.emperormoh.myplayground.presentation.componenets.VerticalStepIndicato
 import com.emperormoh.myplayground.presentation.screens.transfer.LocalTransferRoute
 import com.emperormoh.myplayground.presentation.screens.transfer.LocalTransferViewModel
 import com.emperormoh.myplayground.presentation.screens.PaymentHomePage
-import com.emperormoh.myplayground.presentation.screens.airtimedata.LocalAirtimeRoute
+import com.emperormoh.myplayground.presentation.screens.airtimedata.LocalAirtimeDataRoute
 import com.emperormoh.myplayground.presentation.screens.airtimedata.LocalAirtimeTab
 import com.emperormoh.myplayground.presentation.screens.airtimedata.LocalAirtimeViewModel
 import com.emperormoh.myplayground.presentation.screens.airtimedata.ParentComposable
@@ -82,7 +82,11 @@ class MainActivity : ComponentActivity() {
 //                                localAirtimeViewModel.InitModel(this@MainActivity)
 //                                localAirtimeViewModel.predictPhoneNetwork(it)
 //                            })
-                            LocalAirtimeRoute(localAirtimeViewModel)
+                            LocalAirtimeDataRoute(
+                                localAirtimeViewModel = localAirtimeViewModel,
+                                onBackClick = { TODO() },
+                                onBotClick = { TODO() }
+                            )
                         }
 
                     }

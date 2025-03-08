@@ -6,10 +6,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.emperormoh.myplayground.R
 import com.emperormoh.myplayground.presentation.componenets.alat_components.AlatGeneralText
 import com.emperormoh.myplayground.presentation.componenets.CustomTabs
@@ -18,11 +23,37 @@ import com.emperormoh.myplayground.presentation.componenets.TopBar
 import com.emperormoh.myplayground.ui.theme.MyPlayGroundTheme
 
 @Composable
-fun LocalAirtimeDataScreen(
+fun LocalAirtimeDataRoute(
     modifier: Modifier = Modifier,
-    localAirtimeViewModel: LocalAirtimeViewModel? = null,
+    localAirtimeViewModel: LocalAirtimeViewModel,
     onBackClick: () -> Unit,
     onBotClick: () -> Unit
+){
+    val uiState by localAirtimeViewModel.uiState.collectAsStateWithLifecycle()
+    val coroutineScope = rememberCoroutineScope()
+    val context = LocalContext.current
+    LaunchedEffect(key1 = Unit) {
+        localAirtimeViewModel.initModel(context)
+    }
+    LocalAirtimeDataScreen(
+        modifier = modifier,
+        onBackClick = onBackClick,
+        onBotClick = onBotClick,
+        localAirtimeUiState = uiState,
+        onPhoneNumberChanged = localAirtimeViewModel::onPhoneNumberChanged,
+        onPredictNetwork = localAirtimeViewModel::predictPhoneNetwork,
+        onNetworkSelectionChanged = localAirtimeViewModel::onNetworkSelectionChanged
+    )
+}
+@Composable
+fun LocalAirtimeDataScreen(
+    modifier: Modifier,
+    onBackClick: () -> Unit,
+    onBotClick: () -> Unit,
+    localAirtimeUiState: LocalAirtimeUiState,
+    onPhoneNumberChanged: (String) -> Unit,
+    onPredictNetwork: (String) -> Unit,
+    onNetworkSelectionChanged: (Int) -> Unit
 ){
 
     Scaffold(
@@ -50,7 +81,12 @@ fun LocalAirtimeDataScreen(
                         )
                    },
                     screen = {
-                        //LocalAirtimeTab(onPredictNetwork = {})
+                        LocalAirtimeTab(
+                            onPredictNetwork = onPredictNetwork,
+                            localAirtimeUiState = localAirtimeUiState,
+                            onPhoneNumberChanged = onPhoneNumberChanged,
+                            onNetworkSelectionChanged = onNetworkSelectionChanged,
+                        )
                         //LocalAirtimeRoute(localAirtimeViewModel!!)
                     }
                 ),
@@ -71,14 +107,25 @@ fun LocalAirtimeDataScreen(
 
         }
     }
-
 }
 
 @Preview(showBackground = true)
 @Composable
 fun LocalAirtimeDataScreenPreview(){
     MyPlayGroundTheme {
-        LocalAirtimeDataScreen(onBackClick = {}, onBotClick = {})
+        LocalAirtimeDataScreen(
+            onBackClick = {},
+            onBotClick = {},
+            modifier = Modifier,
+            localAirtimeUiState = LocalAirtimeUiState(
+                isPhoneNumberPredictionLoading = false,
+                isPhoneNumberPredicted = true,
+                predictedNetworkIndex =  3,
+            ),
+            onPhoneNumberChanged = { },
+            onPredictNetwork = {},
+            onNetworkSelectionChanged = {}
+        )
     }
 
 }

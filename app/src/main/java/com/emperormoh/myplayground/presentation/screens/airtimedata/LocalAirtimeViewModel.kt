@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.emperormoh.myplayground.ONNXModelLoader
-import com.emperormoh.myplayground.presentation.screens.transfer.LocalTransferUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -26,7 +25,8 @@ class LocalAirtimeViewModel: ViewModel() {
                 it.copy(
                     isPhoneNumberPredictionLoading = false,
                     isPhoneNumberPredicted = true,
-                    predictedNetworkIndex = predictedClass
+                    predictedNetworkIndex = predictedClass,
+                    selectedNetwork = convertNetworkIndexToName(predictedClass)
                 )
             }
             return when(predictedClass){
@@ -41,7 +41,8 @@ class LocalAirtimeViewModel: ViewModel() {
                 it.copy(
                     isPhoneNumberPredictionLoading = false,
                     isPhoneNumberPredicted = true,
-                    predictedNetworkIndex =  Networks.MTN.type
+                    predictedNetworkIndex =  Networks.MTN.type,
+                    selectedNetwork = convertNetworkIndexToName(Networks.MTN.type)
                 )
             }
             Log.e("PredictNetwork", "Error during network prediction: ${e.message}", e)
@@ -54,7 +55,7 @@ class LocalAirtimeViewModel: ViewModel() {
         return phoneNumber.map { it.toString().toFloat() / 9.0f }.toFloatArray()
     }
 
-    fun InitModel(context: Context){
+    fun initModel(context: Context){
          modelLoader = ONNXModelLoader(context)
     }
 
@@ -64,11 +65,32 @@ class LocalAirtimeViewModel: ViewModel() {
                 phoneNumber = phoneNumber,
                 isPhoneNumberPredictionLoading = false,
                 isPhoneNumberPredicted = false,
-                predictedNetworkIndex =  Networks.MTN.type
+                //predictedNetworkIndex =  Networks.MTN.type
+            )
+        }
+    }
+    fun onNetworkSelectionChanged(index: Int){
+        _uiState.update {
+            it.copy(
+                isPhoneNumberPredictionLoading = false,
+                isPhoneNumberPredicted = true,
+                predictedNetworkIndex =  index,
+                selectedNetwork = convertNetworkIndexToName(index)
             )
         }
     }
 
+    private fun convertNetworkIndexToName(index: Int): String {
+        return when (index) {
+            0 -> "9mobile"
+            1 ->  "Airtel"
+            2 ->  "Globacom"
+            3 ->  "MTN"
+            else -> { "MTN"}
+        }
+
+
+    }
 }
 
 data class LocalAirtimeUiState(
@@ -76,7 +98,7 @@ data class LocalAirtimeUiState(
     val isPhoneNumberPredicted: Boolean = false,
     val isPhoneNumberPredictionLoading: Boolean = false,
     var selectedNetwork: String = "",
-    val predictedNetworkIndex: Int = 3
+    val predictedNetworkIndex: Int = 3,
 )
 
 enum class Networks(val type: Int, val networkName: String){

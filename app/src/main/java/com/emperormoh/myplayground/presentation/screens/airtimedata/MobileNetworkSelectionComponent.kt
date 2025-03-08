@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.emperormoh.myplayground.R
@@ -33,11 +34,18 @@ fun SelectableImagesRow(
     selectedIndex: Int,
     onSelectionChange: (Int) -> Unit
 ) {
+//    val images = listOf(
+//        R.drawable.core_ui_mtn, // Replace with actual drawable resources
+//        R.drawable.core_ui_airtel,
+//        R.drawable.core_ui_nine_mobile,
+//        R.drawable.core_ui_glo
+//    )
     val images = listOf(
-        R.drawable.core_ui_mtn, // Replace with actual drawable resources
-        R.drawable.core_ui_airtel,
         R.drawable.core_ui_nine_mobile,
-        R.drawable.core_ui_glo
+        R.drawable.core_ui_airtel,
+        R.drawable.core_ui_glo,
+        R.drawable.core_ui_mtn,
+
     )
 
     // Automatically select an image when the condition is met
@@ -72,7 +80,7 @@ fun ImageItem(imageRes: Int, isSelected: Boolean, onClick: () -> Unit) {
             .clip(CircleShape) // Make it circular
             .border(
                 width = if (isSelected) 2.dp else 0.dp, // Apply red border if selected
-                color = if (isSelected) Color.Red else Color.Transparent,
+                color = if (isSelected) colorResource(R.color.CoreUiAlatRed) else Color.Transparent,
                 shape = CircleShape
             )
             .clickable { onClick() }

@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -32,40 +33,36 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.emperormoh.myplayground.R
-import com.emperormoh.myplayground.presentation.componenets.alat_components.AlatEditTextField
 import com.emperormoh.myplayground.presentation.componenets.alat_components.AlatEditTextFieldNoLabel
 import com.emperormoh.myplayground.presentation.componenets.alat_components.AlatGeneralText
 import com.emperormoh.myplayground.presentation.componenets.alat_components.AlatRedButton
-import com.emperormoh.myplayground.ui.theme.BankCardBorder
 import com.emperormoh.myplayground.ui.theme.MyPlayGroundTheme
 
 
-@Composable
-fun LocalAirtimeRoute(
-    localAirtimeViewModel: LocalAirtimeViewModel,
-){
-    val uiState by localAirtimeViewModel.uiState.collectAsStateWithLifecycle()
-    val coroutineScope = rememberCoroutineScope()
-    val context = LocalContext.current
-    LaunchedEffect(key1 = Unit) {
-        localAirtimeViewModel.InitModel(context)
-    }
-    LocalAirtimeTab(
-        localAirtimeUiState = uiState,
-        onPredictNetwork = { phone ->
-            if (phone.isNotBlank()) {
-                localAirtimeViewModel.predictPhoneNetwork(uiState.phoneNumber)
-            }
-        },
-        onPhoneNumberChanged = { localAirtimeViewModel.onPhoneNumberChanged(it) }
-    )
-}
+//@Composable
+//fun LocalAirtimeRoute(
+//    localAirtimeViewModel: LocalAirtimeViewModel,
+//){
+//    val uiState by localAirtimeViewModel.uiState.collectAsStateWithLifecycle()
+//    val coroutineScope = rememberCoroutineScope()
+//    val context = LocalContext.current
+//    LaunchedEffect(key1 = Unit) {
+//        localAirtimeViewModel.initModel(context)
+//    }
+//    LocalAirtimeTab(
+//        localAirtimeUiState = uiState,
+//        onPredictNetwork = { localAirtimeViewModel.predictPhoneNetwork(uiState.phoneNumber) },
+//        onPhoneNumberChanged = { localAirtimeViewModel.onPhoneNumberChanged(it) },
+//        onNetworkSelectionChanged = { localAirtimeViewModel.onNetworkSelectionChanged(it) }
+//    )
+//}
 @Composable
 fun LocalAirtimeTab(
     modifier: Modifier = Modifier,
     localAirtimeUiState: LocalAirtimeUiState,
     onPhoneNumberChanged: (String) -> Unit,
-    onPredictNetwork: (String) -> Unit
+    onPredictNetwork: (String) -> Unit,
+    onNetworkSelectionChanged: (Int) -> Unit
 ){
 
     var phoneNumber by remember { mutableStateOf("") }
@@ -73,19 +70,19 @@ fun LocalAirtimeTab(
     val isShowPhoneNumberInputGuideText by remember { mutableStateOf(true) }
     //val isPhoneNumberPredicted by remember { mutableStateOf(true) }
     var selectedNetworkIndex by remember { mutableIntStateOf(-1) } // Holds selected index
-    when(localAirtimeUiState.predictedNetworkIndex){
-        0 -> selectedNetworkIndex = 2
-        1 -> selectedNetworkIndex = 1
-        2 -> selectedNetworkIndex = 3
-        3 -> selectedNetworkIndex = 0
-    }
+//    when(localAirtimeUiState.predictedNetworkIndex){
+//        0 -> selectedNetworkIndex = 2
+//        1 -> selectedNetworkIndex = 1
+//        2 -> selectedNetworkIndex = 3
+//        3 -> selectedNetworkIndex = 0
+//    }
 
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(16.dp)
+            //.padding(16.dp)
     ){
-        Spacer(modifier.height(10.dp))
+        Spacer(modifier.height(30.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -106,7 +103,7 @@ fun LocalAirtimeTab(
                 if (it.length < 11){
                     onPhoneNumberChanged(it)
                 }
-                if (it.length == 11){
+                if (it.isNotBlank() && it.length == 11){
                     onPredictNetwork(it)
                 } },
             placeholder = "Enter phone number",
@@ -128,29 +125,33 @@ fun LocalAirtimeTab(
 
                 SelectableImagesRow(
                     condition = true,
-                    defaultSelectedIndex = 2,
+                    defaultSelectedIndex = localAirtimeUiState.predictedNetworkIndex,
                     selectedIndex = selectedNetworkIndex,
-                    onSelectionChange = { selectedNetworkIndex = it } // Update selection
+                    onSelectionChange = {
+                        selectedNetworkIndex = it
+                        onNetworkSelectionChanged(it)
+                    } // Update selection
                 )
             }
+//            Text(
+//                text = "Selected Index: $selectedNetworkIndex - ${localAirtimeUiState.selectedNetwork}",
+//                modifier = Modifier.padding(top = 16.dp)
+//            )
         }
-
-
         Spacer(modifier.height(30.dp))
 
         AlatRedButton(modifier = Modifier.fillMaxWidth(),
-            text = "Next",
+            text = "Continue",
             onClick = {},
             isEnabled = isContinueButtonEnable
         )
-        Spacer(modifier.height(30.dp))
 
         HorizontalDivider(
             modifier = modifier
-                .fillMaxWidth(),
-                //.padding(horizontal = 1.dp, vertical = 1.dp),
+                .fillMaxWidth()
+                .padding(vertical = 30.dp),
             thickness = 1.dp,
-            color = colorResource(R.color.CoreUiTextFieldHint)
+            color = colorResource(R.color.CoreUiBorderColor)
         )
 
         Column(
@@ -188,7 +189,16 @@ fun LocalAirtimeTab(
 @Composable
 fun LocalAirtimeTabPreview(){
     MyPlayGroundTheme {
-       //LocalAirtimeTab(onPredictNetwork = {})
+       LocalAirtimeTab(
+           onPredictNetwork = {},
+           localAirtimeUiState = LocalAirtimeUiState(
+               isPhoneNumberPredictionLoading = false,
+               isPhoneNumberPredicted = true,
+               predictedNetworkIndex =  3,
+           ),
+           onPhoneNumberChanged = {},
+           onNetworkSelectionChanged = {}
+       )
     }
 
 }
