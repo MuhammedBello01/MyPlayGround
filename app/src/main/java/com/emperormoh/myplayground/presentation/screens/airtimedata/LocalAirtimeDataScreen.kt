@@ -20,16 +20,26 @@ import com.emperormoh.myplayground.presentation.componenets.alat_components.Alat
 import com.emperormoh.myplayground.presentation.componenets.CustomTabs
 import com.emperormoh.myplayground.presentation.componenets.TabRowItem
 import com.emperormoh.myplayground.presentation.componenets.TopBar
+import com.emperormoh.myplayground.presentation.screens.airtimedata.airtime.LocalAirtimeTab
+import com.emperormoh.myplayground.presentation.screens.airtimedata.airtime.LocalAirtimeUiState
+import com.emperormoh.myplayground.presentation.screens.airtimedata.airtime.LocalAirtimeViewModel
+import com.emperormoh.myplayground.presentation.screens.airtimedata.data.LocalDataTab
+import com.emperormoh.myplayground.presentation.screens.airtimedata.data.LocalDataUiState
+import com.emperormoh.myplayground.presentation.screens.airtimedata.data.LocalDataViewModel
 import com.emperormoh.myplayground.ui.theme.MyPlayGroundTheme
 
 @Composable
 fun LocalAirtimeDataRoute(
     modifier: Modifier = Modifier,
     localAirtimeViewModel: LocalAirtimeViewModel,
+    localDataViewModel: LocalDataViewModel,
     onBackClick: () -> Unit,
-    onBotClick: () -> Unit
+    onBotClick: () -> Unit,
+    onNavigateToAirtimeAmountRoute: (String) -> Unit,
+    onNavigateToDataAmountRoute: (String) -> Unit
 ){
-    val uiState by localAirtimeViewModel.uiState.collectAsStateWithLifecycle()
+    val airtimeUiState by localAirtimeViewModel.uiState.collectAsStateWithLifecycle()
+    val dataUiState by localDataViewModel.uiState.collectAsStateWithLifecycle()
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
     LaunchedEffect(key1 = Unit) {
@@ -39,21 +49,28 @@ fun LocalAirtimeDataRoute(
         modifier = modifier,
         onBackClick = onBackClick,
         onBotClick = onBotClick,
-        localAirtimeUiState = uiState,
+        localAirtimeUiState = airtimeUiState,
+        localDataUiState = dataUiState,
         onPhoneNumberChanged = localAirtimeViewModel::onPhoneNumberChanged,
         onPredictNetwork = localAirtimeViewModel::predictPhoneNetwork,
-        onNetworkSelectionChanged = localAirtimeViewModel::onNetworkSelectionChanged
+        onNetworkSelectionChanged = localAirtimeViewModel::onNetworkSelectionChanged,
+        onNavigateToAirtimeAmountRoute = onNavigateToAirtimeAmountRoute,
+        onNavigateToDataAmountRoute = onNavigateToDataAmountRoute
     )
 }
+
 @Composable
 fun LocalAirtimeDataScreen(
     modifier: Modifier,
     onBackClick: () -> Unit,
     onBotClick: () -> Unit,
     localAirtimeUiState: LocalAirtimeUiState,
+    localDataUiState: LocalDataUiState,
     onPhoneNumberChanged: (String) -> Unit,
     onPredictNetwork: (String) -> Unit,
-    onNetworkSelectionChanged: (Int) -> Unit
+    onNetworkSelectionChanged: (Int) -> Unit,
+    onNavigateToAirtimeAmountRoute: (String) -> Unit,
+    onNavigateToDataAmountRoute: (String) -> Unit
 ){
 
     Scaffold(
@@ -86,8 +103,8 @@ fun LocalAirtimeDataScreen(
                             localAirtimeUiState = localAirtimeUiState,
                             onPhoneNumberChanged = onPhoneNumberChanged,
                             onNetworkSelectionChanged = onNetworkSelectionChanged,
+                            onNavigateToAirtimeAmountRoute = onNavigateToAirtimeAmountRoute
                         )
-                        //LocalAirtimeRoute(localAirtimeViewModel!!)
                     }
                 ),
                 TabRowItem(
@@ -99,7 +116,13 @@ fun LocalAirtimeDataScreen(
                         )
                     },
                     screen = {
-                        LocalDataTab()
+                        LocalDataTab(
+                            localDataUiState = localDataUiState,
+                            onPhoneNumberChanged = onPhoneNumberChanged,
+                            onPredictNetwork = onPredictNetwork,
+                            onNetworkSelectionChanged = onNetworkSelectionChanged,
+                            onNavigateToDataAmountRoute = onNavigateToDataAmountRoute
+                        )
                     }
                 )
             )
@@ -122,10 +145,16 @@ fun LocalAirtimeDataScreenPreview(){
                 isPhoneNumberPredicted = true,
                 predictedNetworkIndex =  3,
             ),
+            localDataUiState = LocalDataUiState(
+                isPhoneNumberPredictionLoading = false,
+                isPhoneNumberPredicted = true,
+                predictedNetworkIndex =  3,
+            ),
             onPhoneNumberChanged = { },
             onPredictNetwork = {},
-            onNetworkSelectionChanged = {}
+            onNetworkSelectionChanged = {},
+            onNavigateToAirtimeAmountRoute = {},
+            onNavigateToDataAmountRoute = {}
         )
     }
-
 }

@@ -15,15 +15,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.emperormoh.myplayground.presentation.componenets.UserCarousel
-import com.emperormoh.myplayground.presentation.componenets.VerticalStepIndicatorScreen
 import com.emperormoh.myplayground.presentation.screens.transfer.LocalTransferRoute
 import com.emperormoh.myplayground.presentation.screens.transfer.LocalTransferViewModel
 import com.emperormoh.myplayground.presentation.screens.PaymentHomePage
 import com.emperormoh.myplayground.presentation.screens.airtimedata.LocalAirtimeDataRoute
-import com.emperormoh.myplayground.presentation.screens.airtimedata.LocalAirtimeTab
-import com.emperormoh.myplayground.presentation.screens.airtimedata.LocalAirtimeViewModel
-import com.emperormoh.myplayground.presentation.screens.airtimedata.ParentComposable
-import com.emperormoh.myplayground.presentation.screens.airtimedata.SelectableImagesRow
+import com.emperormoh.myplayground.presentation.screens.airtimedata.airtime.LocalAirtimeTransactionSummaryScreen
+import com.emperormoh.myplayground.presentation.screens.airtimedata.airtime.LocalAirtimeViewModel
+import com.emperormoh.myplayground.presentation.screens.airtimedata.data.LocalDataViewModel
 import com.emperormoh.myplayground.ui.theme.MyPlayGroundTheme
 
 class MainActivity : ComponentActivity() {
@@ -77,6 +75,7 @@ class MainActivity : ComponentActivity() {
                             //VerticalStepIndicatorScreen()
                             //ParentComposable()
                             val localAirtimeViewModel: LocalAirtimeViewModel = viewModel()
+                            val localDataViewModel: LocalDataViewModel = viewModel()
 //                            LocalAirtimeTab(onPredictNetwork = {
 //
 //                                localAirtimeViewModel.InitModel(this@MainActivity)
@@ -84,8 +83,20 @@ class MainActivity : ComponentActivity() {
 //                            })
                             LocalAirtimeDataRoute(
                                 localAirtimeViewModel = localAirtimeViewModel,
-                                onBackClick = { TODO() },
-                                onBotClick = { TODO() }
+                                onBackClick = { navController!!.popBackStack() },
+                                onBotClick = {  },
+                                localDataViewModel = localDataViewModel,
+                                onNavigateToAirtimeAmountRoute = { navController!!.navigate(it)},
+                                onNavigateToDataAmountRoute = {}
+                            )
+                        }
+                        composable("transaction_summary_screen") {
+
+                            LocalAirtimeTransactionSummaryScreen(
+                                onBackClick = { navController!!.popBackStack()},
+                                onBotClick = {},
+                                onPinChange = {},
+                                onPayClick = {}
                             )
                         }
 
