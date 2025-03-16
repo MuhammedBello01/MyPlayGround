@@ -1,4 +1,4 @@
-package com.emperormoh.myplayground.presentation.screens.airtimedata.airtime
+package com.emperormoh.myplayground.presentation.screens.airtimedata.data
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -40,16 +40,17 @@ import com.emperormoh.myplayground.presentation.componenets.TopBar
 import com.emperormoh.myplayground.presentation.componenets.alat_components.AlatAmountTextFieldNoLabel
 import com.emperormoh.myplayground.presentation.componenets.alat_components.AlatEditTextFieldNoLabel
 import com.emperormoh.myplayground.presentation.componenets.alat_components.AlatGeneralText
+import com.emperormoh.myplayground.presentation.componenets.alat_components.AlatOpenDropDownClick
 import com.emperormoh.myplayground.presentation.componenets.alat_components.AlatRedButton
-import com.emperormoh.myplayground.presentation.screens.common.ClickableChip
 import com.emperormoh.myplayground.presentation.screens.common.AutoTopUpSwitchCard
 import com.emperormoh.myplayground.presentation.screens.common.BeneficiaryInfoCard
+import com.emperormoh.myplayground.presentation.screens.common.ClickableChip
 import com.emperormoh.myplayground.presentation.screens.common.LabeledCheckbox
 import com.emperormoh.myplayground.ui.theme.MyPlayGroundTheme
 
 @OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun LocalAirtimeAccountScreen(
+fun LocalDataAccountScreen(
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
     onBotClick: () -> Unit,
@@ -59,13 +60,14 @@ fun LocalAirtimeAccountScreen(
     onBeneficiaryNameChanged: (String) -> Unit,
     onTopUpAmountChanged: (Double) -> Unit,
     onProceedToActivateAutoTopUpClick:() -> Unit,
+    onDropDownValueChanged:(String) -> Unit,
     onProceedToPayClick:() -> Unit
 ){
     val isAutoTopUpChecked by remember { mutableStateOf(false) }
     val isSaveBeneficiaryChecked by remember { mutableStateOf(false) }
-    val selectedSuggestedAmountChip by remember { mutableStateOf<String?>(null) }
+    val selectedSuggestedDataMbChip by remember { mutableStateOf<String?>(null) }
     val selectedTopUpAmountChip by remember { mutableStateOf<String?>(null) }
-    val topUpTypeText by remember { mutableStateOf("Your airtime will automatically recharge") }
+    val topUpTypeText by remember { mutableStateOf("Your data will automatically recharge") }
     var isShowDialog by remember { mutableStateOf(false) }
 
     var amount by remember {
@@ -122,34 +124,43 @@ fun LocalAirtimeAccountScreen(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                AlatGeneralText(text = "Amount", fontWeight = 700, fontSize = 12.sp)
+                AlatGeneralText(text = "Data Bundle", fontWeight = 700, fontSize = 12.sp)
                 AlatGeneralText(
                     text = "Daily Limit: ₦0.00",
                     fontWeight = 400,
                     fontSize = 12.sp
                 )
             }
-
-            AlatAmountTextFieldNoLabel(
-                amount = amount,
-                onAmountChange = onAmountChanged,
-                placeholder = "₦0.00"
+            AlatOpenDropDownClick(value = "",
+                onValueChange = {
+                    onDropDownValueChanged(it)
+                },
+                placeholder = "Select data bundle",
+                onClick = {}
             )
-
-            val amountList = listOf("₦100", "₦250", "₦500", "₦1000")
-            if(amountList.isNotEmpty()){
+            val dataMbList = listOf("100MB", "250MB", "500MB", "1000MB")
+            if(dataMbList.isNotEmpty()){
                 FlowRow{
-                    amountList.forEach { value ->
+                    dataMbList.forEach { value ->
                         ClickableChip(
                             value = value,
-                            isSelected = value == selectedSuggestedAmountChip,
-                            onSuggestedAmountClicked = { amount = it.replace("₦", "").toDouble()
-                            onAmountChanged(amount)
-                        })
+                            isSelected = value == selectedSuggestedDataMbChip,
+                            onSuggestedAmountClicked = { amount = it.replace("MB", "").toDouble()
+                                onAmountChanged(amount)
+                            })
                         Spacer(modifier.width(10.dp))
                     }
                 }
             }
+            AlatGeneralText(text = "Amount",
+                fontWeight = 700,
+                fontSize = 12.sp
+            )
+            AlatAmountTextFieldNoLabel(
+                amount = thresholdAmount,
+                onAmountChange = onTopUpAmountChanged,
+                placeholder = "₦0.00"
+            )
             Spacer(modifier.height(10.dp))
             LabeledCheckbox(
                 isChecked = isSaveBeneficiaryChecked,
@@ -195,30 +206,32 @@ fun LocalAirtimeAccountScreen(
                         }
                         Spacer(Modifier.height(30.dp))
                         AlatGeneralText(
-                            text = stringResource(R.string.airtime_top_up_disclaimer),
+                            text = stringResource(R.string.data_top_up_disclaimer),
                             fontWeight = 400,
                             fontSize = 12.sp,
                             textAlign = TextAlign.Center
                         )
                         Spacer(Modifier.height(30.dp))
-                        AlatGeneralText(text = "Top-up When Airtime Is",
+                        AlatGeneralText(text = "Top-up When Data Is",
                             fontWeight = 700,
                             fontSize = 12.sp
                         )
-                        AlatAmountTextFieldNoLabel(
-                            amount = thresholdAmount,
-                            onAmountChange = onTopUpAmountChanged,
-                            placeholder = "₦0.00"
+                        AlatEditTextFieldNoLabel(value = "",
+                            onValueChange = {
+                                if (it.isNotBlank()){
+                                    onTopUpAmountChanged(it.toDouble())
+                                } },
+                            placeholder = "Enter a nickname",
+                            suffixText = "MB"
                         )
-                        Spacer(Modifier.height(5.dp))
-                        val thresholdAmountList = listOf("₦100", "₦250", "₦500", "₦1000")
-                        if(thresholdAmountList.isNotEmpty()){
+                        val thresholdDataMbList = listOf("100MB", "250MB", "500MB", "1000MB")
+                        if(thresholdDataMbList.isNotEmpty()){
                             FlowRow{
-                                thresholdAmountList.forEach { value ->
+                                thresholdDataMbList.forEach { value ->
                                     ClickableChip(
                                         value = value,
                                         isSelected = value == selectedTopUpAmountChip,
-                                        onSuggestedAmountClicked = { thresholdAmount = it.replace("₦", "").toDouble()
+                                        onSuggestedAmountClicked = { thresholdAmount = it.replace("MB", "").toDouble()
                                             onTopUpAmountChanged(thresholdAmount)
                                         })
                                     Spacer(modifier.width(10.dp))
@@ -233,29 +246,24 @@ fun LocalAirtimeAccountScreen(
                         )
                     }
                 }
-
             }
-
         }
+
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun TopUpDialog(
+fun DataTopUpDialog(
     modifier: Modifier = Modifier,
-    onProceedToActivateAutoTopUpClick:() -> Unit,
     onTopUpAmountChanged: (Double) -> Unit,
+    onProceedToActivateAutoTopUpClick:() -> Unit
 ){
-    val selectedChip by remember { mutableStateOf<String?>(null) }
-    var isShowDialog by remember { mutableStateOf(false) }
-
-    var amount by remember {
-        mutableDoubleStateOf(0.0)
-    }
+    val selectedTopUpAmountChip by remember { mutableStateOf<String?>(null) }
     var thresholdAmount by remember {
         mutableDoubleStateOf(0.0)
     }
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -278,30 +286,32 @@ fun TopUpDialog(
         }
         Spacer(Modifier.height(30.dp))
         AlatGeneralText(
-            text = stringResource(R.string.airtime_top_up_disclaimer),
+            text = stringResource(R.string.data_top_up_disclaimer),
             fontWeight = 400,
             fontSize = 12.sp,
             textAlign = TextAlign.Center
         )
         Spacer(Modifier.height(30.dp))
-        AlatGeneralText(text = "Top-up When Airtime Is",
+        AlatGeneralText(text = "Top-up When Data Is",
             fontWeight = 700,
             fontSize = 12.sp
         )
-        AlatAmountTextFieldNoLabel(
-            amount = thresholdAmount,
-            onAmountChange = onTopUpAmountChanged,
-            placeholder = "₦0.00"
+        AlatEditTextFieldNoLabel(value = "",
+            onValueChange = {
+                if (it.isNotBlank()){
+                    onTopUpAmountChanged(it.toDouble())
+                } },
+            placeholder = "MB",
+            suffixText = "MB"
         )
-        Spacer(Modifier.height(5.dp))
-        val thresholdAmountList = listOf("₦100", "₦250", "₦500", "₦1000")
-        if(thresholdAmountList.isNotEmpty()){
+        val thresholdDataMbList = listOf("100MB", "250MB", "500MB", "1000MB")
+        if(thresholdDataMbList.isNotEmpty()){
             FlowRow{
-                thresholdAmountList.forEach { value ->
+                thresholdDataMbList.forEach { value ->
                     ClickableChip(
                         value = value,
-                        isSelected = value == selectedChip,
-                        onSuggestedAmountClicked = { thresholdAmount = it.replace("₦", "").toDouble()
+                        isSelected = value == selectedTopUpAmountChip,
+                        onSuggestedAmountClicked = { thresholdAmount = it.replace("MB", "").toDouble()
                             onTopUpAmountChanged(thresholdAmount)
                         })
                     Spacer(modifier.width(10.dp))
@@ -314,15 +324,14 @@ fun TopUpDialog(
             text = "Proceed to activate",
             onClick = onProceedToActivateAutoTopUpClick
         )
-
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun LocalAirtimeAccountPreview(){
+fun LocalDataAccountPreview(){
     MyPlayGroundTheme {
-        LocalAirtimeAccountScreen(onBotClick = {},
+        LocalDataAccountScreen(onBotClick = {},
             onBackClick = {},
             onAmountChanged = {},
             onProceedToPayClick = {},
@@ -330,10 +339,11 @@ fun LocalAirtimeAccountPreview(){
             onSaveBeneficiaryChecked = {},
             onBeneficiaryNameChanged = {},
             onProceedToActivateAutoTopUpClick = {},
-            onTopUpAmountChanged = {}
+            onTopUpAmountChanged = {},
+            onDropDownValueChanged = {}
         )
 
-//        TopUpDialog(
+//        DataTopUpDialog(
 //            onProceedToActivateAutoTopUpClick = {},
 //            onTopUpAmountChanged = {},
 //

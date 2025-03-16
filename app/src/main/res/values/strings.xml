@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">MyPlayGround</string>
+
+    <string name="airtime_top_up_disclaimer">By proceeding, you agree to activate Auto Top-up. Your airtime
+        recharges automatically when it reaches your set limit amount</string>
+
+    <string name="data_top_up_disclaimer">By proceeding, you agree to activate Auto Top-up. Your data recharges
+        automatically when it reaches your set limit amount</string>
 </resources>

@@ -101,6 +101,8 @@ fun LocalAirtimeTransactionSummaryScreen(
             NameAndValueRow(nameText = "Phone Number", valueText = "08064054305")
             NameAndValueRow(nameText = "Product", valueText = "Airtime")
             NameAndValueRow(nameText = "Network", valueText = "MTN")
+            NameAndValueRow(nameText = "Auto Top-up", valueText = "On")
+            NameAndValueRow(nameText = "Top-up When Airtime Is", valueText = "N100")
 
             HorizontalDivider(
                 modifier = modifier

@@ -101,7 +101,9 @@ fun LocalDataTransactionSummaryScreen(
             NameAndValueRow(nameText = "Phone Number", valueText = "08064054305")
             NameAndValueRow(nameText = "Product", valueText = "Airtime")
             NameAndValueRow(nameText = "Network", valueText = "MTN")
-            NameAndValueRow(nameText = "Data Bundle", valueText = "MTN")
+            NameAndValueRow(nameText = "Data Bundle", valueText = "Bundle By Bundle")
+            NameAndValueRow(nameText = "Auto Top-up", valueText = "On")
+            NameAndValueRow(nameText = "Top-up When Data Is", valueText = "100MB")
 
             HorizontalDivider(
                 modifier = modifier

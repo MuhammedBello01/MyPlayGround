@@ -81,7 +81,7 @@ fun BeneficiaryInfoCard(
     modifier: Modifier = Modifier,
     titleText: String,
     descriptionText: String,
-    isShowArrow: Boolean = true,
+    //isShowArrow: Boolean = true,
     imageRes: Int = R.drawable.core_ui_mtn
 ){
     Box(
@@ -103,11 +103,11 @@ fun BeneficiaryInfoCard(
             Column(
                 modifier.align(alignment = Alignment.CenterVertically)
             ){
-                AlatGeneralText(text = "Phone Number",
+                AlatGeneralText(text = titleText,
                     fontWeight = 500,
                     fontSize = 14.sp
                 )
-                AlatGeneralText(text = "MTN",
+                AlatGeneralText(text = descriptionText,
                     fontWeight = 400,
                     fontSize = 12.sp,
                     textColor = colorResource(R.color.CoreUiTextFieldHint)
@@ -173,26 +173,35 @@ fun AutoTopUpSwitchCard(
 fun ClickableChip(
     modifier: Modifier = Modifier,
     value: String = "₦0.00",
+    isSelected: Boolean = false,
     onSuggestedAmountClicked: (String) -> Unit
 ){
+    val backgroundColor = if (isSelected) colorResource(R.color.CoreUiPinkBorder)
+    else colorResource(R.color.CoreUiSurfaceBackground)
+
+    val borderColor = if (isSelected) colorResource(R.color.CoreUiAlatRed)
+    else colorResource(R.color.CoreUiBorderColor)
+
+    val textColor = if (isSelected) colorResource(R.color.CoreUiAlatRed) else colorResource(R.color.CoreUiTextColor)
     Box(
         modifier = Modifier
             .padding(vertical = 4.dp)
             .wrapContentSize()
             .background(
-                color = colorResource(R.color.CoreUiSurfaceBackground),
+                color = backgroundColor,
                 shape = RoundedCornerShape(8.dp)
             )
             .border(
                 width = 1.dp,
                 shape = RoundedCornerShape(8.dp),
-                color = colorResource(R.color.CoreUiBorderColor)
+                color = borderColor
             )
             .clickable { onSuggestedAmountClicked(value) },
         contentAlignment = Alignment.Center
     ){
         AlatGeneralText(
             modifier = modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+            textColor = textColor,
             text = value,
             fontWeight = 400,
             fontSize = 12.sp

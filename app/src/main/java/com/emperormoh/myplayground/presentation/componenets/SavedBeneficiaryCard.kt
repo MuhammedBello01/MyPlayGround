@@ -144,7 +144,7 @@ fun SavedBeneficiaryCard(
                     color = BankGray,
             shape = CircleShape)
             .border(width = 0.5.dp, color = BankCardBorder, shape = CircleShape)
-            .size(50.dp).clip(CircleShape),
+            .size(30.dp).clip(CircleShape),
                 model = beneficiary.beneficiaryBankLogo,
                 contentDescription = beneficiary.destinationBankName,
                 placeholderIcon = { Icon(modifier = Modifier.fillMaxSize()
@@ -174,21 +174,21 @@ fun SavedBeneficiaryCard(
                     letterSpacing = 0.2.sp))
             }
         }
-        AnimatedVisibility(
-            modifier = Modifier
-                .padding(end = 4.dp, top = 4.dp, bottom = 4.dp)
-                .align(Alignment.CenterEnd),
-            visible = isShowArrow,
-            enter = slideInHorizontally() + expandVertically(),
-            exit = slideOutHorizontally() + shrinkVertically()
-        ){
-            Image(
-                imageVector = Icons.AutoMirrored.Outlined.KeyboardArrowRight,
-                contentDescription = "content image",
-                colorFilter = ColorFilter.tint(color = Color.Gray),
-                contentScale = ContentScale.FillBounds
-            )
-        }
+//        AnimatedVisibility(
+//            modifier = Modifier
+//                .padding(end = 4.dp, top = 4.dp, bottom = 4.dp)
+//                .align(Alignment.CenterEnd),
+//            visible = isShowArrow,
+//            enter = slideInHorizontally() + expandVertically(),
+//            exit = slideOutHorizontally() + shrinkVertically()
+//        ){
+//            Image(
+//                imageVector = Icons.AutoMirrored.Outlined.KeyboardArrowRight,
+//                contentDescription = "content image",
+//                colorFilter = ColorFilter.tint(color = Color.Gray),
+//                contentScale = ContentScale.FillBounds
+//            )
+//        }
 
 
     }
@@ -208,4 +208,109 @@ fun SavedBenCardPreview(){
 
         }
     }
+}
+
+fun getMockBeneficiaries(): List<TransferBeneficiary> {
+    return listOf(
+        TransferBeneficiary(
+            id = "1",
+            destinationAccountNumber = "1234567890",
+            destinationAccountName = "John Doe",
+            destinationBankName = "Bank of America",
+            destinationBankCode = "BOA",
+            nickName = "John Savings",
+            currency = "USD",
+            beneficiaryBankLogo = "https://example.com/bank_logo_1.png"
+        ),
+        TransferBeneficiary(
+            id = "2",
+            destinationAccountNumber = "9876543210",
+            destinationAccountName = "Jane Smith",
+            destinationBankName = "Chase Bank",
+            destinationBankCode = "CHS",
+            nickName = "Jane Checking",
+            currency = "USD",
+            beneficiaryBankLogo = "https://example.com/bank_logo_2.png"
+        ),
+        TransferBeneficiary(
+            id = "3",
+            destinationAccountNumber = "1122334455",
+            destinationAccountName = "Michael Johnson",
+            destinationBankName = "Wells Fargo",
+            destinationBankCode = "WF",
+            nickName = "Mike Salary",
+            currency = "USD",
+            beneficiaryBankLogo = "https://example.com/bank_logo_3.png"
+        ),
+        TransferBeneficiary(
+            id = "4",
+            destinationAccountNumber = "5566778899",
+            destinationAccountName = "Emily Davis",
+            destinationBankName = "CitiBank",
+            destinationBankCode = "CITI",
+            nickName = "Emily Savings",
+            currency = "USD",
+            beneficiaryBankLogo = "https://example.com/bank_logo_4.png"
+        ),
+        TransferBeneficiary(
+            id = "5",
+            destinationAccountNumber = "9988776655",
+            destinationAccountName = "Daniel Brown",
+            destinationBankName = "HSBC",
+            destinationBankCode = "HSBC",
+            nickName = "Danny Business",
+            currency = "USD",
+            beneficiaryBankLogo = "https://example.com/bank_logo_5.png"
+        ),
+        TransferBeneficiary(
+            id = "6",
+            destinationAccountNumber = "4455667788",
+            destinationAccountName = "Sophia Wilson",
+            destinationBankName = "Standard Chartered",
+            destinationBankCode = "SCB",
+            nickName = "Sophia Travel",
+            currency = "GBP",
+            beneficiaryBankLogo = "https://example.com/bank_logo_6.png"
+        ),
+        TransferBeneficiary(
+            id = "7",
+            destinationAccountNumber = "2233445566",
+            destinationAccountName = "Chris Evans",
+            destinationBankName = "Barclays",
+            destinationBankCode = "BAR",
+            nickName = "Chris Home Loan",
+            currency = "EUR",
+            beneficiaryBankLogo = "https://example.com/bank_logo_7.png"
+        ),
+        TransferBeneficiary(
+            id = "8",
+            destinationAccountNumber = "6677889900",
+            destinationAccountName = "Olivia Martinez",
+            destinationBankName = "Deutsche Bank",
+            destinationBankCode = "DB",
+            nickName = "Olivia Family",
+            currency = "EUR",
+            beneficiaryBankLogo = "https://example.com/bank_logo_8.png"
+        ),
+        TransferBeneficiary(
+            id = "9",
+            destinationAccountNumber = "3344556677",
+            destinationAccountName = "William Anderson",
+            destinationBankName = "Santander",
+            destinationBankCode = "SAN",
+            nickName = "Will Stocks",
+            currency = "USD",
+            beneficiaryBankLogo = "https://example.com/bank_logo_9.png"
+        ),
+        TransferBeneficiary(
+            id = "10",
+            destinationAccountNumber = "7788990011",
+            destinationAccountName = "Isabella Thomas",
+            destinationBankName = "UBS",
+            destinationBankCode = "UBS",
+            nickName = "Bella Emergency",
+            currency = "CHF",
+            beneficiaryBankLogo = "https://example.com/bank_logo_10.png"
+        )
+    )
 }

@@ -227,6 +227,7 @@ fun AlatEditTextFieldNoLabel(
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
     prefixText:String? = null,
+    suffixText:String? = null,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     visualTransformation: VisualTransformation? = null
@@ -239,24 +240,17 @@ fun AlatEditTextFieldNoLabel(
         colorResource(R.color.CoreUiTextColor)
     }
 
-    val background = if (value.isEmpty() && !hasError){
-        colorResource(R.color.CoreUiSurfaceBackground)
-    }else if(hasError){
-        colorResource(R.color.CoreUiErrorBackground)
-    }else if(value.isNotEmpty()){
-        colorResource(R.color.CoreUiBackgroundColor)
-    }
-    else{
-        colorResource(R.color.CoreUiBackgroundColor)
+    val background = when {
+        hasError -> colorResource(R.color.CoreUiErrorBackground)
+        value.isEmpty() && !hasError -> colorResource(R.color.CoreUiSurfaceBackground)
+        else -> colorResource(R.color.CoreUiBackgroundColor)
     }
 
-    val backgroundBorderColor = if(hasError) {
-        colorResource(R.color.CoreUiPinkBorder)
+    val backgroundBorderColor = when {
+        hasError -> colorResource(R.color.CoreUiPinkBorder) // Has error, prioritize showing error color
+        value.isEmpty() -> colorResource(R.color.CoreUiSurfaceBackground) // No error, but empty input
+        else -> colorResource(R.color.CoreUiBorderColor) // Default color when value is not empty
     }
-    else{
-        colorResource(R.color.CoreUiBorderColor)
-    }
-
 
     Column(modifier = modifier) {
         Box(
@@ -268,7 +262,7 @@ fun AlatEditTextFieldNoLabel(
                 .border(
                     width = 1.dp,
                     shape = RoundedCornerShape(8.dp),
-                    color = backgroundBorderColor
+                    color = backgroundBorderColor//if (isFieldEmpty)colorResource(R.color.CoreUiSurfaceBackground) else backgroundBorderColor
                 )
                 .fillMaxWidth(),
             contentAlignment = Alignment.Center
@@ -304,6 +298,13 @@ fun AlatEditTextFieldNoLabel(
                 prefix = {
                     AlatGeneralText(
                         text = prefixText ?: "",
+                        fontSize = fontSize,
+                        textColor = textColor
+                    )
+                },
+                suffix = {
+                    AlatGeneralText(
+                        text = suffixText ?: "",
                         fontSize = fontSize,
                         textColor = textColor
                     )
@@ -477,7 +478,6 @@ fun PinTextFieldTwo(
                     }
                 }
             }
-
         )
         if (hasError && errorMessage != null) {
             AlatGeneralText(
@@ -490,7 +490,7 @@ fun PinTextFieldTwo(
 }
 
 @Composable
-fun AlatOpenDropDownUi(
+fun AlatOpenDropDownClick(
     modifier: Modifier = Modifier,
     value: String,
     placeholder: String = "",
@@ -499,21 +499,29 @@ fun AlatOpenDropDownUi(
     enabled: Boolean = false,
     onValueChange: (String) -> Unit,
     textColor: Color = colorResource(R.color.CoreUiTextColor),
-    background: Color = colorResource(R.color.CoreUiSurfaceBackground),
     onClick: () -> Unit
 ){
+    val backgroundBorderColor = if(value.isEmpty()){
+        colorResource(R.color.CoreUiSurfaceBackground)
+    }
+    else{ colorResource(R.color.CoreUiBorderColor) }
+
+    val backgroundColor = if (value.isEmpty()){
+        colorResource(R.color.CoreUiSurfaceBackground)
+    }
+    else{ colorResource(R.color.CoreUiBackgroundColor) }
     Row(
         modifier = modifier.fillMaxWidth()
             .background(
-                color = background,
+                color = backgroundColor,
                 shape = RoundedCornerShape(8.dp)
             )
             .border(
                 width = 1.dp,
                 shape = RoundedCornerShape(8.dp),
-                color = background
+                color = backgroundBorderColor
             )
-            .padding(vertical = 10.dp)
+            //.padding(vertical = 10.dp)
             .clickable {
                 if(enabled){
                     onClick()
@@ -571,7 +579,7 @@ fun InputsPreview() {
             Spacer(Modifier.height(10.dp))
             PinTextFieldTwo(onValueChange = {}, value = "7869")
             Spacer(Modifier.height(10.dp))
-            AlatOpenDropDownUi(value = "", onValueChange = {},
+            AlatOpenDropDownClick(value = "", onValueChange = {},
                 placeholder = "Select data bundle",
                 onClick = {})
             Spacer(Modifier.height(10.dp))
@@ -591,3 +599,21 @@ fun InputsPreview() {
 
     }
 }
+
+//val background = if (value.isEmpty() && !hasError){
+//    colorResource(R.color.CoreUiSurfaceBackground)
+//}else if(hasError){
+//    colorResource(R.color.CoreUiErrorBackground)
+//}else if(value.isNotEmpty()){
+//    colorResource(R.color.CoreUiBackgroundColor)
+//}
+//else{
+//    colorResource(R.color.CoreUiBackgroundColor)
+//}
+//
+//val backgroundBorderColor = if(hasError) {
+//    colorResource(R.color.CoreUiPinkBorder)
+//}
+//else{
+//    colorResource(R.color.CoreUiBorderColor)
+//}

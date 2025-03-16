@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
@@ -28,6 +29,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -72,11 +74,13 @@ fun LocalAirtimeTab(
 
     val context = LocalContext.current
     val phoneNumber = rememberSaveable { mutableStateOf("") }
-    //var phoneNumber by remember { mutableStateOf("") }
+    var inputedPhoneNumber by remember { mutableStateOf("") }
     val isContinueButtonEnable by remember { mutableStateOf(false) }
     val isShowPhoneNumberInputGuideText by remember { mutableStateOf(true) }
     //val isPhoneNumberPredicted by remember { mutableStateOf(true) }
     var selectedNetworkIndex by remember { mutableIntStateOf(-1) } // Holds selected index
+    val keyboard = LocalSoftwareKeyboardController.current
+
 //    when(localAirtimeUiState.predictedNetworkIndex){
 //        0 -> selectedNetworkIndex = 2
 //        1 -> selectedNetworkIndex = 1
@@ -142,7 +146,7 @@ fun LocalAirtimeTab(
         }
         AlatEditTextFieldNoLabel(value = localAirtimeUiState.phoneNumber,
             onValueChange = {
-                //phoneNumber = it
+                //inputedPhoneNumber = it
                 //localAirtimeUiState.phoneNumber = it
                 if (it.length < 11){
                     onPhoneNumberChanged(it)
@@ -151,7 +155,11 @@ fun LocalAirtimeTab(
                     onPredictNetwork(it)
                 } },
             placeholder = "Enter phone number",
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone)
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
+            keyboardActions = KeyboardActions(
+                onDone = {keyboard?.hide()},
+                onNext = {keyboard?.hide()}
+            )
         )
 
         if (isShowPhoneNumberInputGuideText){

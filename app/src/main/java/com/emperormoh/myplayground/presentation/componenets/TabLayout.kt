@@ -87,12 +87,12 @@ fun CustomTab(
             modifier = modifier.padding(2.dp)
                 .background(color = if (selected) Color.White else BankGray,
                     shape = if (selected) RoundedCornerShape(8.dp) else RectangleShape)
-                .shadow(
-                    elevation = if (selected) 2.dp else 0.dp,
-                    shape = RoundedCornerShape(8.dp),
-                    ambientColor = BankGray,
-                    spotColor = BankGray
-                )
+//                .shadow(
+//                    elevation = if (selected) 2.dp else 0.dp,
+//                    shape = RoundedCornerShape(8.dp),
+//                    ambientColor = BankGray,
+//                    spotColor = BankGray
+//                )
                 .height(38.dp)
                 .fillMaxWidth(),
             contentAlignment = Alignment.Center

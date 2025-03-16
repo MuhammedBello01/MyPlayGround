@@ -25,6 +25,7 @@ class LocalAirtimeViewModel: ViewModel() {
             println("Predicted Class: $predictedClass, Confidence: $confidence")
             _uiState.update {
                 it.copy(
+                    phoneNumber = phoneNumber,
                     isPhoneNumberPredictionLoading = false,
                     isPhoneNumberPredicted = true,
                     predictedNetworkIndex = predictedClass,
