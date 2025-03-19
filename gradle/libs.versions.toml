@@ -18,6 +18,7 @@ datastorePreferences = "1.1.2"
 onnxruntimeAndroid = "1.20.0"
 securityCrypto = "1.1.0-alpha06"
 gson = "2.10.1"
+tensorflowLite = "2.11.0"
 
 
 [libraries]
@@ -53,6 +54,7 @@ androidx-security-crypto = { module = "androidx.security:security-crypto", versi
 
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 onnxruntime-android = { module = "com.microsoft.onnxruntime:onnxruntime-android", version.ref = "onnxruntimeAndroid" }
+tensorflow-lite = { module = "org.tensorflow:tensorflow-lite", version.ref = "tensorflowLite" }
 
 
 

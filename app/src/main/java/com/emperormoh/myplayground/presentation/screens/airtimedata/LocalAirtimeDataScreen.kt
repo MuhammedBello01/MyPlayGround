@@ -44,6 +44,7 @@ fun LocalAirtimeDataRoute(
     val context = LocalContext.current
     LaunchedEffect(key1 = Unit) {
         localAirtimeViewModel.initModel(context)
+        //localAirtimeViewModel.initTensorModel(context)
     }
     LocalAirtimeDataScreen(
         modifier = modifier,

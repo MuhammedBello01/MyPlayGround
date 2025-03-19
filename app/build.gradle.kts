@@ -70,6 +70,7 @@ dependencies {
     implementation(libs.androidx.material.icons.extended)
 
     implementation (libs.onnxruntime.android)
+    implementation(libs.tensorflow.lite)
 
 //    implementation(libs.accompanist.pager)
 //    implementation(libs.accompanist.pager.indicators)

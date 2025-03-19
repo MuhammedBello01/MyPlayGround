@@ -3,13 +3,17 @@ package com.emperormoh.myplayground.presentation.screens.airtimedata.airtime
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.emperormoh.myplayground.TFLiteModelLoader
 import com.emperormoh.myplayground.ONNXModelLoader
 import com.emperormoh.myplayground.presentation.screens.common.MobileNetworks
 import com.emperormoh.myplayground.presentation.screens.common.convertNetworkIndexToName
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 class LocalAirtimeViewModel: ViewModel() {
 
@@ -17,6 +21,7 @@ class LocalAirtimeViewModel: ViewModel() {
     val uiState: StateFlow<LocalAirtimeUiState> = _uiState.asStateFlow()
 
     private var modelLoader: ONNXModelLoader? = null
+   private var tFLiteModelLoader: TFLiteModelLoader? = null
 
     fun predictPhoneNetwork(phoneNumber: String): MobileNetworks {
         try {
@@ -40,6 +45,7 @@ class LocalAirtimeViewModel: ViewModel() {
                 else -> MobileNetworks.MTN
             }
         }catch (e: Exception){
+            e.printStackTrace()
             _uiState.update {
                 it.copy(
                     isPhoneNumberPredictionLoading = false,
@@ -53,6 +59,16 @@ class LocalAirtimeViewModel: ViewModel() {
         }
     }
 
+    fun predict(phoneNumber: String) {
+        val result = tFLiteModelLoader?.predict(phoneNumber)
+        if (result != null) {
+            val (predictedClass, confidence) = result
+            println("Predicted Class: $predictedClass, Confidence: $confidence")
+        } else {
+            Log.e("TFLiteViewModel", "Prediction failed")
+        }
+    }
+
     // Method to Convert Full 11-Digit Phone Number to Input Array
     private fun preprocessPhoneNumber(phoneNumber: String): FloatArray {
         return phoneNumber.map { it.toString().toFloat() / 9.0f }.toFloatArray()
@@ -60,6 +76,12 @@ class LocalAirtimeViewModel: ViewModel() {
 
     fun initModel(context: Context){
          modelLoader = ONNXModelLoader(context)
+    }
+
+    fun initTensorModel(context: Context){
+        viewModelScope.launch(Dispatchers.IO) {
+            tFLiteModelLoader =TFLiteModelLoader(context)
+        }
     }
 
     fun onPhoneNumberChanged(phoneNumber: String){
@@ -82,6 +104,11 @@ class LocalAirtimeViewModel: ViewModel() {
             )
         }
     }
+
+//    override fun onCleared() {
+//        super.onCleared()
+//        tFLiteModelLoader?.close()
+//    }
 
 
 }
