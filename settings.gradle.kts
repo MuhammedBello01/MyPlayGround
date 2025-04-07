@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "MyPlayGround"
 include(":app")
- 
+include(":mytflitesdk")

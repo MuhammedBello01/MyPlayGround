@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
@@ -185,15 +186,16 @@ fun ClickableChip(
     val textColor = if (isSelected) colorResource(R.color.CoreUiAlatRed) else colorResource(R.color.CoreUiTextColor)
     Box(
         modifier = Modifier
-            .padding(vertical = 4.dp)
-            .wrapContentSize()
+            .padding(vertical = 6.dp)
+            //.wrapContentSize()
+            .sizeIn(minWidth = 80.dp, minHeight = 50.dp)
             .background(
                 color = backgroundColor,
-                shape = RoundedCornerShape(8.dp)
+                shape = RoundedCornerShape(6.dp)
             )
             .border(
                 width = 1.dp,
-                shape = RoundedCornerShape(8.dp),
+                shape = RoundedCornerShape(6.dp),
                 color = borderColor
             )
             .clickable { onSuggestedAmountClicked(value) },
@@ -204,7 +206,7 @@ fun ClickableChip(
             textColor = textColor,
             text = value,
             fontWeight = 400,
-            fontSize = 12.sp
+            fontSize = 14.sp
         )
     }
 }

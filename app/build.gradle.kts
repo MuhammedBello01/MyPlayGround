@@ -71,6 +71,7 @@ dependencies {
 
     implementation (libs.onnxruntime.android)
     implementation(libs.tensorflow.lite)
+    implementation(files("libs/mytflitesdk-release.aar"))
 
 //    implementation(libs.accompanist.pager)
 //    implementation(libs.accompanist.pager.indicators)

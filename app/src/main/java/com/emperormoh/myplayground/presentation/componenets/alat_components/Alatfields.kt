@@ -145,7 +145,7 @@ fun AlatEditTextField(
             contentAlignment = Alignment.Center
         ) {
             TextField(
-                modifier = Modifier.fillMaxWidth(),
+                modifier =  Modifier.fillMaxWidth().height(52.dp),
                 value = value,
                 onValueChange = {
                     if (it.length <= maxLength) {
@@ -584,7 +584,7 @@ fun InputsPreview() {
                 onClick = {})
             Spacer(Modifier.height(10.dp))
             var amount by remember {
-                mutableDoubleStateOf(0.0)
+                mutableDoubleStateOf(0.045445)
             }
             AlatAmountTextFieldNoLabel(
                 amount = amount,

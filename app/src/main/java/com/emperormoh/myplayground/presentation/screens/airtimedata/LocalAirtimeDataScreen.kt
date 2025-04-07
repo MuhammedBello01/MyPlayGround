@@ -43,8 +43,8 @@ fun LocalAirtimeDataRoute(
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
     LaunchedEffect(key1 = Unit) {
-        localAirtimeViewModel.initModel(context)
-        //localAirtimeViewModel.initTensorModel(context)
+        //localAirtimeViewModel.initModel(context)
+        localAirtimeViewModel.initTensorModel(context)
     }
     LocalAirtimeDataScreen(
         modifier = modifier,
@@ -53,7 +53,7 @@ fun LocalAirtimeDataRoute(
         localAirtimeUiState = airtimeUiState,
         localDataUiState = dataUiState,
         onPhoneNumberChanged = localAirtimeViewModel::onPhoneNumberChanged,
-        onPredictNetwork = localAirtimeViewModel::predictPhoneNetwork,
+        onPredictNetwork = localAirtimeViewModel::predict,//localAirtimeViewModel::predictPhoneNetwork,
         onNetworkSelectionChanged = localAirtimeViewModel::onNetworkSelectionChanged,
         onNavigateToAirtimeAmountRoute = onNavigateToAirtimeAmountRoute,
         onNavigateToDataAmountRoute = onNavigateToDataAmountRoute

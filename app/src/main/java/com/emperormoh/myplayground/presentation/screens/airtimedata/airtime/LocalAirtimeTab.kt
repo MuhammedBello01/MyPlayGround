@@ -4,6 +4,7 @@ import android.app.Activity
 import android.database.Cursor
 import android.net.Uri
 import android.provider.ContactsContract
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -152,6 +153,7 @@ fun LocalAirtimeTab(
                     onPhoneNumberChanged(it)
                 }
                 if (it.isNotBlank() && it.length == 11){
+                    Log.d("Block Prediction", "entered prediction block")
                     onPredictNetwork(it)
                 } },
             placeholder = "Enter phone number",

@@ -11,8 +11,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.emperormoh.myplayground.ui.theme.MyPlayGroundTheme
 
 @Composable
 fun VerticalStepIndicator(steps: List<TransactionStep>) {
@@ -103,5 +105,12 @@ fun VerticalStepIndicatorScreen() {
         VerticalStepIndicator(steps = te)
     }
 
+}
 
+@Preview(showBackground = true)
+@Composable
+fun IndicatorPreview(){
+    MyPlayGroundTheme {
+        VerticalStepIndicatorScreen()
+    }
 }

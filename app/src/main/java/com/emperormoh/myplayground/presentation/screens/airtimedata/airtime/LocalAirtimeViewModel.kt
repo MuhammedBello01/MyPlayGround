@@ -8,6 +8,7 @@ import com.emperormoh.myplayground.TFLiteModelLoader
 import com.emperormoh.myplayground.ONNXModelLoader
 import com.emperormoh.myplayground.presentation.screens.common.MobileNetworks
 import com.emperormoh.myplayground.presentation.screens.common.convertNetworkIndexToName
+import com.emperormoh.mytflitesdk.TFLiteModelLoaderSdk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -21,7 +22,8 @@ class LocalAirtimeViewModel: ViewModel() {
     val uiState: StateFlow<LocalAirtimeUiState> = _uiState.asStateFlow()
 
     private var modelLoader: ONNXModelLoader? = null
-   private var tFLiteModelLoader: TFLiteModelLoader? = null
+   //private var tFLiteModelLoader: TFLiteModelLoader? = null
+   private var _modelLoader : TFLiteModelLoaderSdk? = null
 
     fun predictPhoneNetwork(phoneNumber: String): MobileNetworks {
         try {
@@ -60,13 +62,19 @@ class LocalAirtimeViewModel: ViewModel() {
     }
 
     fun predict(phoneNumber: String) {
-        val result = tFLiteModelLoader?.predict(phoneNumber)
+//        val result = tFLiteModelLoader?.predict(phoneNumber)
+//        if (result != null) {
+//            val (predictedClass, confidence) = result
+//            println("Predicted Class: $predictedClass, Confidence: $confidence")
+//        } else {
+//            Log.e("TFLiteViewModel", "Prediction failed")
+//        }
+        val result = _modelLoader?.predict(phoneNumber)
         if (result != null) {
-            val (predictedClass, confidence) = result
-            println("Predicted Class: $predictedClass, Confidence: $confidence")
-        } else {
-            Log.e("TFLiteViewModel", "Prediction failed")
+            val (index, confidence) = result
+            Log.d("SDK Prediction", "Predicted Index: $index, Confidence: $confidence")
         }
+        _modelLoader?.close()
     }
 
     // Method to Convert Full 11-Digit Phone Number to Input Array
@@ -79,9 +87,10 @@ class LocalAirtimeViewModel: ViewModel() {
     }
 
     fun initTensorModel(context: Context){
-        viewModelScope.launch(Dispatchers.IO) {
-            tFLiteModelLoader =TFLiteModelLoader(context)
-        }
+        _modelLoader = TFLiteModelLoaderSdk(context)
+//        viewModelScope.launch(Dispatchers.IO) {
+//            tFLiteModelLoader =TFLiteModelLoader(context)
+//        }
     }
 
     fun onPhoneNumberChanged(phoneNumber: String){

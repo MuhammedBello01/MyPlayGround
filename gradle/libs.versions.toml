@@ -19,6 +19,7 @@ onnxruntimeAndroid = "1.20.0"
 securityCrypto = "1.1.0-alpha06"
 gson = "2.10.1"
 tensorflowLite = "2.11.0"
+appcompat = "1.7.0"
 
 
 [libraries]
@@ -55,6 +56,7 @@ androidx-security-crypto = { module = "androidx.security:security-crypto", versi
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 onnxruntime-android = { module = "com.microsoft.onnxruntime:onnxruntime-android", version.ref = "onnxruntimeAndroid" }
 tensorflow-lite = { module = "org.tensorflow:tensorflow-lite", version.ref = "tensorflowLite" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 
 
 
@@ -62,4 +64,5 @@ tensorflow-lite = { module = "org.tensorflow:tensorflow-lite", version.ref = "te
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+android-library = { id = "com.android.library", version.ref = "agp" }
 
