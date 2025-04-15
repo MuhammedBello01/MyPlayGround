@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -20,13 +21,18 @@ import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import com.emperormoh.myplayground.presentation.componenets.AutoCompleteTextField
 import com.emperormoh.myplayground.presentation.componenets.BeneficiaryAutoCompleteTextField
+import com.emperormoh.myplayground.presentation.componenets.SpeechInputTextField
 import com.emperormoh.myplayground.presentation.componenets.UserCarousel
 import com.emperormoh.myplayground.presentation.componenets.alat_components.AlatRedButton
+import com.emperormoh.myplayground.presentation.componenets.alat_components.SpeechToTextViewModel
 import com.emperormoh.myplayground.presentation.componenets.getMockBeneficiaries
+import com.emperormoh.myplayground.presentation.screens.LottieAnimationView
 import com.emperormoh.myplayground.presentation.screens.transfer.LocalTransferRoute
 import com.emperormoh.myplayground.presentation.screens.transfer.LocalTransferViewModel
 import com.emperormoh.myplayground.presentation.screens.PaymentHomePage
+import com.emperormoh.myplayground.presentation.screens.SelectOneFromLazyColumn
 import com.emperormoh.myplayground.presentation.screens.airtimedata.LocalAirtimeDataRoute
+import com.emperormoh.myplayground.presentation.screens.airtimedata.airtime.BeneficiaryScreen
 import com.emperormoh.myplayground.presentation.screens.airtimedata.airtime.LocalAirtimeTransactionSummaryScreen
 import com.emperormoh.myplayground.presentation.screens.airtimedata.airtime.LocalAirtimeViewModel
 import com.emperormoh.myplayground.presentation.screens.airtimedata.data.LocalDataViewModel
@@ -77,17 +83,22 @@ class MainActivity : ComponentActivity() {
 //                            onBeneficiarySelected = {},
 //                            onBackClick = {})
                             //AutoCompleteTextField()
-                            Column(modifier = Modifier.fillMaxWidth()) {
-                                SpaceHeight(100.dp)
-
-                                BeneficiaryAutoCompleteTextField(
-                                    beneficiaries = getMockBeneficiaries(),
-                                    onBeneficiarySelected = {}
-                                )
-                                SpaceHeight(10.dp)
-                                AlatRedButton(modifier = Modifier.fillMaxWidth(), text = "Happy", onClick = {})
-                            }
-
+//                            Column(modifier = Modifier.fillMaxWidth()) {
+//                                SpaceHeight(100.dp)
+//
+//                                BeneficiaryAutoCompleteTextField(
+//                                    beneficiaries = getMockBeneficiaries(),
+//                                    onBeneficiarySelected = {}
+//                                )
+//                                SpaceHeight(10.dp)
+//                                AlatRedButton(modifier = Modifier.fillMaxWidth(), text = "Happy", onClick = {})
+//                            }
+                            //MyScreen()
+                            //
+                        //BeneficiaryScreen()
+//                            val viewModel: SpeechToTextViewModel =  viewModel()
+//                            SpeechInputTextField(viewModel)
+                            LottieAnimationView()
                         }
                         composable("bill_payment"){
                             UserCarousel()

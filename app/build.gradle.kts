@@ -50,6 +50,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.compose.material)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -72,6 +73,13 @@ dependencies {
     implementation (libs.onnxruntime.android)
     implementation(libs.tensorflow.lite)
     implementation(files("libs/mytflitesdk-release.aar"))
+
+
+    implementation (libs.androidx.runtime.livedata)
+    implementation (libs.androidx.runtime)
+    implementation (libs.lottie.compose)
+
+
 
 //    implementation(libs.accompanist.pager)
 //    implementation(libs.accompanist.pager.indicators)
