@@ -366,15 +366,15 @@ fun BeneficiaryScreen(){
     }
     SpeechToTextScreen()
 
-//    BeneficiaryListWise(
-//        beneficiaries = mockAirtimeBeneficiaries,
-//        onDelete = { beneficiary ->
-//            Toast.makeText(context, "Delete ${beneficiary.nickName}", Toast.LENGTH_SHORT).show()
-//        },
-//        onEdit = { beneficiary ->
-//            Toast.makeText(context, "Edit ${beneficiary.nickName}", Toast.LENGTH_SHORT).show()
-//        },
-//        onClick = {beneficiary ->
-//            Toast.makeText(context, "Clicked ${beneficiary.nickName}", Toast.LENGTH_SHORT).show()}
-//    )
+    BeneficiaryListWise(
+        beneficiaries = mockAirtimeBeneficiaries,
+        onDelete = { beneficiary ->
+            Toast.makeText(context, "Delete ${beneficiary.nickName}", Toast.LENGTH_SHORT).show()
+        },
+        onEdit = { beneficiary ->
+            Toast.makeText(context, "Edit ${beneficiary.nickName}", Toast.LENGTH_SHORT).show()
+        },
+        onClick = {beneficiary ->
+            Toast.makeText(context, "Clicked ${beneficiary.nickName}", Toast.LENGTH_SHORT).show()}
+    )
 }

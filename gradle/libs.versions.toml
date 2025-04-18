@@ -11,6 +11,7 @@ lifecycleRuntimeKtx = "2.8.7"
 activityCompose = "1.10.0"
 composeBom = "2025.04.00"
 lottieCompose = "6.1.0"
+material = "1.7.8"
 materialIconsExtended = "1.7.8"
 navigationCompose = "2.8.6"
 android-material = "1.12.0"
@@ -30,6 +31,7 @@ composeMaterial = "1.4.1"
 #accompanist-pager-indicators = { module = "com.google.accompanist:accompanist-pager-indicators", version.ref = "accompanistPager" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "foundation" }
+androidx-material = { module = "androidx.compose.material:material", version.ref = "material" }
 androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
 androidx-runtime = { module = "androidx.compose.runtime:runtime" }
 androidx-runtime-livedata = { module = "androidx.compose.runtime:runtime-livedata", version.ref = "runtimeLivedata" }

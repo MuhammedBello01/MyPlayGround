@@ -79,6 +79,8 @@ dependencies {
     implementation (libs.androidx.runtime)
     implementation (libs.lottie.compose)
 
+    implementation(libs.androidx.material)
+
 
 
 //    implementation(libs.accompanist.pager)

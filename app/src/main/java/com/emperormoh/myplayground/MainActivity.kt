@@ -27,6 +27,7 @@ import com.emperormoh.myplayground.presentation.componenets.alat_components.Alat
 import com.emperormoh.myplayground.presentation.componenets.alat_components.SpeechToTextViewModel
 import com.emperormoh.myplayground.presentation.componenets.getMockBeneficiaries
 import com.emperormoh.myplayground.presentation.screens.LottieAnimationView
+import com.emperormoh.myplayground.presentation.screens.MainScreen
 import com.emperormoh.myplayground.presentation.screens.transfer.LocalTransferRoute
 import com.emperormoh.myplayground.presentation.screens.transfer.LocalTransferViewModel
 import com.emperormoh.myplayground.presentation.screens.PaymentHomePage
@@ -98,7 +99,9 @@ class MainActivity : ComponentActivity() {
                         //BeneficiaryScreen()
 //                            val viewModel: SpeechToTextViewModel =  viewModel()
 //                            SpeechInputTextField(viewModel)
-                            LottieAnimationView()
+                            //LottieAnimationView()
+
+                            MainScreen()
                         }
                         composable("bill_payment"){
                             UserCarousel()
