@@ -19,8 +19,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import com.emperormoh.myplayground.presentation.TextToSpeechExample
 import com.emperormoh.myplayground.presentation.componenets.AutoCompleteTextField
 import com.emperormoh.myplayground.presentation.componenets.BeneficiaryAutoCompleteTextField
+import com.emperormoh.myplayground.presentation.componenets.PersonList
 import com.emperormoh.myplayground.presentation.componenets.SpeechInputTextField
 import com.emperormoh.myplayground.presentation.componenets.UserCarousel
 import com.emperormoh.myplayground.presentation.componenets.alat_components.AlatRedButton
@@ -100,8 +102,9 @@ class MainActivity : ComponentActivity() {
 //                            val viewModel: SpeechToTextViewModel =  viewModel()
 //                            SpeechInputTextField(viewModel)
                             //LottieAnimationView()
-
-                            MainScreen()
+                            //MainScreen()
+                            //TextToSpeechExample()
+                            PersonList()
                         }
                         composable("bill_payment"){
                             UserCarousel()

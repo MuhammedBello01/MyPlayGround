@@ -22,4 +22,8 @@
     <color name="CoreUiPinkBorder">#FCC0D1</color>
     <color name="CoreUiBorderColor">#D1D5DB</color>
     <color name="CoreUiDarkTealColor">#00293C</color>
+    <color name="CoreUiAlwaysBrightRed">#EA0B4A</color>
+    <color name="CoreUiAlwaysDarkGreen">#237B4B</color>
+
+
 </resources>
