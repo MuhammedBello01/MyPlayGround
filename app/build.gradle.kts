@@ -82,6 +82,12 @@ dependencies {
 
     implementation(libs.androidx.material)
 
+    implementation (libs.androidx.biometric)
+    implementation (libs.ui)
+
+    implementation (libs.androidx.media)
+
+
 
 
 //    implementation(libs.accompanist.pager)

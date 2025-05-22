@@ -231,7 +231,7 @@ fun <T> ReuseAbleSwipeAbleList(
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.Center,
-                            modifier = Modifier.padding(horizontal = 32.dp)
+                            modifier = Modifier.padding(horizontal = 32.dp, vertical = 6.dp)
                         ) {
                             icon?.let {
                                 LottieLoaderFromAssets(
@@ -241,7 +241,7 @@ fun <T> ReuseAbleSwipeAbleList(
                             }
                             Spacer(Modifier.height(5.dp))
                             if (label.isNotEmpty()) {
-                                Text(label, color = Color.White)
+                                Text(label, color = Color.White, )
                             }
                         }
                     }
@@ -274,8 +274,9 @@ fun Color.darkenByProgress(progress: Float): Color {
     return copy(
     red = (red * (1f - effectiveDarkness)).coerceIn(0f, 1f),
     green = (green * (1f - effectiveDarkness)).coerceIn(0f, 1f),
-    blue = (blue * (1f - effectiveDarkness)).coerceIn(0f, 1f)
-).compositeOver(Color.Black.copy(alpha = progress * 0.15f))
+    blue = (blue * (1f - effectiveDarkness))
+        .coerceIn(0f, 1f))
+        .compositeOver(Color.Black.copy(alpha = progress * 0.15f))
 }
 
 data class Person(val id: String, val name: String, val age: Int)

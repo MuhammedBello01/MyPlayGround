@@ -28,11 +28,13 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.imageLoader
 import coil.memory.MemoryCache
+import com.emperormoh.myplayground.R
 import com.emperormoh.myplayground.ui.theme.AlatRed
 import com.emperormoh.myplayground.ui.theme.LightGray
 import com.emperormoh.myplayground.ui.theme.WhiteTextColor
@@ -119,7 +121,12 @@ fun LoadImageFromUrlOpt(
     progressIndicatorColor: Color = LightGray,
     loadingIndicatorSize: Dp = 20.dp,
     contentScale: ContentScale = ContentScale.Fit,
-    placeholderIcon: @Composable (() -> Unit)? = { Icon(imageVector = Icons.Outlined.Person, contentDescription = "Placeholder") }
+    placeholderIcon: @Composable (() -> Unit)? = {  Image(
+        painter = painterResource(id = R.drawable.ic_beneficiary),
+        contentDescription = null,
+        contentScale = ContentScale.Crop,
+        modifier =  Modifier.fillMaxSize()
+    )}
 ) {
     var isLoading by remember { mutableStateOf(true) }
     var hasError by remember { mutableStateOf(false) }

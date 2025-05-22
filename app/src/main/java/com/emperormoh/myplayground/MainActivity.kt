@@ -1,6 +1,8 @@
 package com.emperormoh.myplayground
 
+import SnackbarDemoScreen
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -12,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -22,12 +25,18 @@ import androidx.navigation.compose.rememberNavController
 import com.emperormoh.myplayground.presentation.TextToSpeechExample
 import com.emperormoh.myplayground.presentation.componenets.AutoCompleteTextField
 import com.emperormoh.myplayground.presentation.componenets.BeneficiaryAutoCompleteTextField
+import com.emperormoh.myplayground.presentation.componenets.BiometricAuthScreen
+import com.emperormoh.myplayground.presentation.componenets.FinalBiometricAuthScreen
 import com.emperormoh.myplayground.presentation.componenets.PersonList
 import com.emperormoh.myplayground.presentation.componenets.SpeechInputTextField
+import com.emperormoh.myplayground.presentation.componenets.TestBioFun
 import com.emperormoh.myplayground.presentation.componenets.UserCarousel
 import com.emperormoh.myplayground.presentation.componenets.alat_components.AlatRedButton
 import com.emperormoh.myplayground.presentation.componenets.alat_components.SpeechToTextViewModel
+import com.emperormoh.myplayground.presentation.componenets.audio_play.AudioPlayerScreen
+import com.emperormoh.myplayground.presentation.componenets.audio_play.AudioPlayerScreen2
 import com.emperormoh.myplayground.presentation.componenets.getMockBeneficiaries
+import com.emperormoh.myplayground.presentation.componenets.snackBar.TopSnackBarTestScreen
 import com.emperormoh.myplayground.presentation.screens.LottieAnimationView
 import com.emperormoh.myplayground.presentation.screens.MainScreen
 import com.emperormoh.myplayground.presentation.screens.transfer.LocalTransferRoute
@@ -42,7 +51,7 @@ import com.emperormoh.myplayground.presentation.screens.airtimedata.data.LocalDa
 import com.emperormoh.myplayground.presentation.screens.transfer.SpaceHeight
 import com.emperormoh.myplayground.ui.theme.MyPlayGroundTheme
 
-class MainActivity : ComponentActivity() {
+class MainActivity : FragmentActivity() {
     private var navController: NavHostController? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,10 +90,10 @@ class MainActivity : ComponentActivity() {
                         }
                         composable("send_money"){
                             //SelectOneFromLazyColumn()
-//                            LocalTransferRoute(
-//                            viewModel = localTransferVm,
-//                            onBeneficiarySelected = {},
-//                            onBackClick = {})
+                            LocalTransferRoute(
+                            viewModel = localTransferVm,
+                            onBeneficiarySelected = {},
+                            onBackClick = {})
                             //AutoCompleteTextField()
 //                            Column(modifier = Modifier.fillMaxWidth()) {
 //                                SpaceHeight(100.dp)
@@ -104,10 +113,25 @@ class MainActivity : ComponentActivity() {
                             //LottieAnimationView()
                             //MainScreen()
                             //TextToSpeechExample()
-                            PersonList()
+                            //PersonList()
+                            //BiometricAuthScreen()
+                            //TestBioFun()
+
+//                            FinalBiometricAuthScreen(
+//                                onAuthSuccess = {
+//                                    // Navigate or perform secure action
+//                                    Log.d("Auth", "Authenticated successfully!")
+//                                },
+//                                onAuthError = { error ->
+//                                    Log.e("Auth", "Error: $error")
+//                                }
+//                            )
+                            //TopSnackBarTestScreen()
+                            //SnackbarDemoScreen()
                         }
                         composable("bill_payment"){
-                            UserCarousel()
+                           // UserCarousel()
+                            AudioPlayerScreen()
                         }
                         navigation(startDestination = "local_Airtime_data", route = "shared_payment_graph"){
                             composable("local_Airtime_data"){
