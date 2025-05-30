@@ -35,6 +35,7 @@ import com.emperormoh.myplayground.presentation.componenets.alat_components.Alat
 import com.emperormoh.myplayground.presentation.componenets.alat_components.SpeechToTextViewModel
 import com.emperormoh.myplayground.presentation.componenets.audio_play.AudioPlayerScreen
 import com.emperormoh.myplayground.presentation.componenets.audio_play.AudioPlayerScreen2
+import com.emperormoh.myplayground.presentation.componenets.audio_play.VoiceListenerScreen
 import com.emperormoh.myplayground.presentation.componenets.getMockBeneficiaries
 import com.emperormoh.myplayground.presentation.componenets.snackBar.TopSnackBarTestScreen
 import com.emperormoh.myplayground.presentation.screens.LottieAnimationView
@@ -131,7 +132,8 @@ class MainActivity : FragmentActivity() {
                         }
                         composable("bill_payment"){
                            // UserCarousel()
-                            AudioPlayerScreen()
+                           // AudioPlayerScreen()
+                            VoiceListenerScreen()
                         }
                         navigation(startDestination = "local_Airtime_data", route = "shared_payment_graph"){
                             composable("local_Airtime_data"){

@@ -52,6 +52,7 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.compose.material)
+    implementation(libs.androidx.media3.common.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -86,6 +87,11 @@ dependencies {
     implementation (libs.ui)
 
     implementation (libs.androidx.media)
+
+    implementation(libs.porcupine.android) // Check for latest version
+    implementation (libs.kotlinx.coroutines.android)
+
+
 
 
 

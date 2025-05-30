@@ -10,8 +10,8 @@ import android.util.Base64
 import android.util.Log
 import androidx.media.AudioAttributesCompat
 import androidx.media.AudioFocusRequestCompat
-import androidx.media.AudioManagerCompat
 import java.io.ByteArrayInputStream
+import androidx.media.AudioManagerCompat
 import java.io.InputStream
 
 class PCM16AudioPlayer(
@@ -220,7 +220,7 @@ class PCM16AudioPlayer(
 //            .build()
 //
 //        AudioManagerCompat.requestAudioFocus(audioManager, focusRequest)
-        AudioManagerCompat.requestAudioFocus(audioManager, audioFocusRequest)
+            AudioManagerCompat.requestAudioFocus(audioManager, audioFocusRequest)
     }
 
     private fun abandonAudioFocus() {
