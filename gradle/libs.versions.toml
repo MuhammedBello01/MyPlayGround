@@ -2,6 +2,7 @@
 accompanistPager = "0.36.0"
 agp = "8.8.0"
 biometric = "1.2.0-alpha05"
+cameraCore = "1.4.2"
 foundation = "1.7.8"
 kotlin = "2.0.0"
 coreKtx = "1.15.0"
@@ -21,6 +22,7 @@ android-material = "1.12.0"
 
 datastorePreferences = "1.1.2"
 onnxruntimeAndroid = "1.20.0"
+playServicesMlkitTextRecognition = "19.0.1"
 porcupineAndroid = "3.0.1"
 runtimeLivedata = "1.7.8"
 securityCrypto = "1.1.0-alpha06"
@@ -30,12 +32,19 @@ appcompat = "1.7.0"
 composeMaterial = "1.4.1"
 ui = "1.8.1"
 media3CommonKtx = "1.7.1"
+voskAndroid = "0.3.47"
+voskAndroidVersion = "0.3.45"
+scenecore = "1.0.0-alpha04"
 
 
 [libraries]
 #accompanist-pager = { module = "com.google.accompanist:accompanist-pager", version.ref = "accompanistPager" }
 #accompanist-pager-indicators = { module = "com.google.accompanist:accompanist-pager-indicators", version.ref = "accompanistPager" }
 androidx-biometric = { module = "androidx.biometric:biometric", version.ref = "biometric" }
+androidx-camera-camera2 = { module = "androidx.camera:camera-camera2", version.ref = "cameraCore" }
+androidx-camera-core = { module = "androidx.camera:camera-core", version.ref = "cameraCore" }
+androidx-camera-lifecycle = { module = "androidx.camera:camera-lifecycle", version.ref = "cameraCore" }
+androidx-camera-view = { module = "androidx.camera:camera-view", version.ref = "cameraCore" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "foundation" }
 androidx-material = { module = "androidx.compose.material:material", version.ref = "material" }
@@ -72,12 +81,16 @@ gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroid" }
 lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottieCompose" }
 onnxruntime-android = { module = "com.microsoft.onnxruntime:onnxruntime-android", version.ref = "onnxruntimeAndroid" }
+play-services-mlkit-text-recognition = { module = "com.google.android.gms:play-services-mlkit-text-recognition", version.ref = "playServicesMlkitTextRecognition" }
 porcupine-android = { module = "ai.picovoice:porcupine-android", version.ref = "porcupineAndroid" }
 tensorflow-lite = { module = "org.tensorflow:tensorflow-lite", version.ref = "tensorflowLite" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 androidx-compose-material = { group = "androidx.wear.compose", name = "compose-material", version.ref = "composeMaterial" }
 ui = { module = "androidx.compose.ui:ui", version.ref = "ui" }
 androidx-media3-common-ktx = { group = "androidx.media3", name = "media3-common-ktx", version.ref = "media3CommonKtx" }
+vosk-android = { module = "com.alphacephei:vosk-android", version.ref = "voskAndroid" }
+androidx-scenecore = { group = "androidx.xr.scenecore", name = "scenecore", version.ref = "scenecore" }
+#vosk-vosk-android = { module = "org.vosk:vosk-android", version.ref = "voskAndroidVersion" }
 
 
 

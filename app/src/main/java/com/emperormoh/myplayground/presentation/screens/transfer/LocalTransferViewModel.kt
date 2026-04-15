@@ -193,6 +193,10 @@ class LocalTransferViewModel : ViewModel() {
     }
     private fun getPredictedBanks() = listOf(
         Bank(bankCode = "0000000000", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/000004.png", bankName = "UNITED BANK FOR AFRICA"),
+        Bank(bankCode = "0000000000", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/000004.png", bankName = "UNITED BANK FOR AFRICA"),
+        Bank(bankCode = "0000000000", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/000004.png", bankName = "UNITED BANK FOR AFRICA"),
+
+
         Bank(bankCode = "1111111111", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/000003.png", bankName = "FCMB"),
         Bank(bankCode = "2222222222", bankLogo = "https://wemaalatblobstorage.blob.core.windows.net/bankimages/000011.png", bankName = "UNITY BANK"),
     )

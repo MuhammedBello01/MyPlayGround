@@ -91,11 +91,25 @@ dependencies {
     implementation(libs.porcupine.android) // Check for latest version
     implementation (libs.kotlinx.coroutines.android)
 
+    implementation (libs.vosk.android)
 
 
 
+    // CameraX (for camera)
+    implementation(libs.androidx.camera.core)
+    implementation(libs.androidx.camera.camera2)
+    implementation(libs.androidx.camera.lifecycle)
+    implementation(libs.androidx.camera.view)
+
+// ML Kit for OCR (Google's text recognition)
+    implementation(libs.play.services.mlkit.text.recognition)
 
 
+    //implementation(libs.androidx.scenecore)
+
+
+
+    //implementation (libs.vosk.vosk.android)
 //    implementation(libs.accompanist.pager)
 //    implementation(libs.accompanist.pager.indicators)
 }

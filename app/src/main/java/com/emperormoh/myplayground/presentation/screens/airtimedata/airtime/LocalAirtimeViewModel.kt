@@ -73,8 +73,24 @@ class LocalAirtimeViewModel: ViewModel() {
         if (result != null) {
             val (index, confidence) = result
             Log.d("SDK Prediction", "Predicted Index: $index, Confidence: $confidence")
+             when(index){
+                MobileNetworks.NineMobile.type -> MobileNetworks.NineMobile
+                MobileNetworks.Airtel.type -> MobileNetworks.Airtel
+                MobileNetworks.Glo.type -> MobileNetworks.Glo
+                MobileNetworks.MTN.type -> MobileNetworks.MTN
+                else -> MobileNetworks.MTN
+            }
+            _uiState.update {
+                it.copy(
+                    phoneNumber = phoneNumber,
+                    isPhoneNumberPredictionLoading = false,
+                    isPhoneNumberPredicted = true,
+                    predictedNetworkIndex = index,
+                    selectedNetwork = convertNetworkIndexToName(index)
+                )
+            }
         }
-        _modelLoader?.close()
+       // _modelLoader?.close()
     }
 
     // Method to Convert Full 11-Digit Phone Number to Input Array
@@ -87,7 +103,10 @@ class LocalAirtimeViewModel: ViewModel() {
     }
 
     fun initTensorModel(context: Context){
-        _modelLoader = TFLiteModelLoaderSdk(context)
+
+        viewModelScope.launch {
+            _modelLoader = TFLiteModelLoaderSdk(context)
+        }
 //        viewModelScope.launch(Dispatchers.IO) {
 //            tFLiteModelLoader =TFLiteModelLoader(context)
 //        }

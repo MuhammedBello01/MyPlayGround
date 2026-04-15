@@ -149,9 +149,10 @@ fun LocalAirtimeTab(
             onValueChange = {
                 //inputedPhoneNumber = it
                 //localAirtimeUiState.phoneNumber = it
-                if (it.length < 11){
-                    onPhoneNumberChanged(it)
-                }
+//                if (it.length < 11){
+//                    onPhoneNumberChanged(it)
+//                }
+                onPhoneNumberChanged(it)
                 if (it.isNotBlank() && it.length == 11){
                     Log.d("Block Prediction", "entered prediction block")
                     onPredictNetwork(it)
